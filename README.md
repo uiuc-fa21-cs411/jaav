@@ -1,5 +1,5 @@
 # JAAV
-(***)
+*** 
 ### Team Memebers 
 - Captian: Janani Rajadurai [jananir2](jananir2@illinois.edu)
 - Abhigya Wangoo [awangoo2](awangoo2@illinois.edu)
@@ -9,5 +9,5 @@
 Project Title: 
 
 ### Project Summary
-(***)
+***
 
