@@ -6,7 +6,7 @@
 - Vineet Chinthakindi [vineetc2](vineetc2@illinois.edu)
 - Alan Wandke [awandke2](awandke2@illinois.edu)
 
-Project Title: 
+Project Title: TBD
 
 ### Project Summary
 ***
