@@ -5,9 +5,9 @@
 - We want users to be able to search and filter based on their preferences to visit outdoor sites of their choice.
 
 ## Usefulness
-- Explain as clearly as possible why your chosen application is useful.  Make sure to answer the following questions: Are there any similar websites/applications out there?  If so, what are they and how is yours different?
 - Users often are looking for outdoor activities in locations that they are visiting. Our application will be able to provide this to users while also allowing them to experience the natural wildlife around them.
-- Similar websites: 
+- Similar websites: TripAdvisor, GoogleMaps
+- This application is unique from the above two due to the fact that it focuses only on outdoor activities and provides the added benefit of viewing biodiversity.
  
 ## Realness
 - Describe what your data is and where you will get it.
