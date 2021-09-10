@@ -29,5 +29,7 @@
 - What do you imagine your final application’s interface might look like? A PowerPoint slide or a pencil sketch on a piece of paper works!
 
 ## Work Distribution
-- Who would be responsible for each of the tasks or subtasks?
+- Gathering relevant data/finding relevant datasets: Alan
+- Building backend API with different routes to fetch all data: Janani and Abhi
+- Create frontend: Vineet
 
