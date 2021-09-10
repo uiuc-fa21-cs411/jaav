@@ -16,6 +16,15 @@
 ## Description of Functionality 
 - Description of the functionality that your website offers. This is where you talk about what the website delivers. Talk about how a user would interact with the application (i.e. things that one could create, delete, update, or search for) Read the requirements for stages 4 and 5 to see what other functionalities you want to provide to the users. 
 
+- Our database will have at least 4 tables including: parks, trails, biodiverity, campsites
+  - parks database has information about the park name, location, and size 
+  - trails has a trail id, park where the trail can be found, length, popularity, and elevation 
+  - biodiversity has information about what wildlife is found in which park at what frequency 
+  - campsites has information about locations of campsites in national parks 
+- A user will be able to query to find different parks to go to based on what kinds of animals they want to see and if they want to camp. They can also query to find what kind of trail they would want to goto in a certain national park. There will be additional features such as filtering trail options based on their features or popularity. 
+- We will also allow the user to add a location or trail to the database so that other users could search for it and also they would be able to find it again in the future. 
+- For a creative componenet, we could incorporate a databse of recent searches as a sort of popularity measure for hikes or parks. We could then use this data to recommend certain parks or hikes based on trends. 
+
 ## UI Mockup
 - What do you imagine your final application’s interface might look like? A PowerPoint slide or a pencil sketch on a piece of paper works!
 

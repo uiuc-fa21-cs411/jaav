@@ -9,7 +9,10 @@
 Project Title: Trailture
 
 ### Project Summary
-For our project, we will be developing a web app which will locate nearby outdoor activities. Given a certain location, Trailture will order a list of nearby outdoor activities to do, such as camping, hiking, watersports, scenic views, and more. Users will also be allowed to filter locations by popularity, completion length, and distance. Additionally, users will have access to the biodiviersity rankings of the specific nearby outdoor locations.
 ***
+[Project details](jaav/ProjectDescription.md) \ 
+
+For our project, we will be developing a web app which will locate nearby outdoor activities. Given a certain location, Trailture will order a list of nearby outdoor activities to do, such as camping, hiking, watersports, scenic views, and more. Users will also be allowed to filter locations by popularity, completion length, and distance. Additionally, users will have access to the biodiviersity rankings of the specific nearby outdoor locations.
+
 
 
