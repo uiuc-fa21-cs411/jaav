@@ -10,7 +10,8 @@
 - This application is unique from the above two due to the fact that it focuses only on outdoor activities and provides the added benefit of viewing biodiversity.
  
 ## Realness
-- Describe what your data is and where you will get it.
+- Our data will consist of multiple databases pulled from an opensource website known as kaggle. We will take databases referencing different parks, trails, and events, with their respective locations.
+- Additionally, for our biodiversity component, we will be using a biodiversity dataset from kaggle in order to filter the specific flora and fauna of various locations users would want to visit.
 
 ## Description of Functionality 
 - Description of the functionality that your website offers. This is where you talk about what the website delivers. Talk about how a user would interact with the application (i.e. things that one could create, delete, update, or search for) Read the requirements for stages 4 and 5 to see what other functionalities you want to provide to the users. 
