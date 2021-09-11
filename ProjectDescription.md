@@ -27,6 +27,7 @@
 
 ## UI Mockup
 - What do you imagine your final application’s interface might look like? A PowerPoint slide or a pencil sketch on a piece of paper works!
+![mockup](https://user-images.githubusercontent.com/37272048/132936648-dbec804c-7c63-4fef-90f6-ca9aec8fb4e7.jpg)
 
 ## Work Distribution
 - Gathering relevant data/finding relevant datasets: Alan
