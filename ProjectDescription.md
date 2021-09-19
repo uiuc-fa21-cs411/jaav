@@ -26,7 +26,6 @@
 - For a creative componenet, we could incorporate a databse of recent searches as a sort of popularity measure for hikes or parks. We could then use this data to recommend certain parks or hikes based on trends. 
 
 ## UI Mockup
-- What do you imagine your final application’s interface might look like? A PowerPoint slide or a pencil sketch on a piece of paper works!
 ![mockup](https://user-images.githubusercontent.com/37272048/132936648-dbec804c-7c63-4fef-90f6-ca9aec8fb4e7.jpg)
 
 ## Work Distribution
