@@ -36,4 +36,7 @@ Campsites(CampsiteName:VARCHAR(255) [PK], ParkName:VARCHAR(255) [FK to Parks.Par
 
 Species(ScientificName:VARCHAR(255), ParkName:VARCHAR(255) [FK to Parks.ParkName], CommonName:VARCHAR(255), Nativeness:VARCHAR(255), Category:VARCHAR(255))
 
+VisitedParks(Username:VARCHAR(255)[FK to Users.ParkName], ParkName:VARCHAR(255) [FK to Parks.ParkName])
+
+FavoriteTrails(TrailName:VARCHAR(255) [FK to Trails.TrailName], ParkName:VARCHAR(255) [FK to Parks.ParkName], Visited:Boolean)
 
