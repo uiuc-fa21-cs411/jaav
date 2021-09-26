@@ -26,7 +26,7 @@
 
 ### Relational Schema
 ***
-Users(Username:VARCHAR(255) [PK], Password:VARCHAR(255))
+```Users(Username:VARCHAR(255) [PK], Password:VARCHAR(255))
 
 Parks(ParkName:VARCHAR(255) [PK], Latitude:DECIMAL(15,2), Longitude: DECIMAL(15,2), Size:DECIMAL(15,2), TotalVisitors:INT))
 
@@ -39,4 +39,6 @@ Species(ScientificName:VARCHAR(255), ParkName:VARCHAR(255) [FK to Parks.ParkName
 VisitedParks(Username:VARCHAR(255)[FK to Users.ParkName], ParkName:VARCHAR(255) [FK to Parks.ParkName])
 
 FavoriteTrails(TrailName:VARCHAR(255) [FK to Trails.TrailName], ParkName:VARCHAR(255) [FK to Parks.ParkName], Visited:Boolean)
+```
+
 
