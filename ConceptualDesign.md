@@ -4,10 +4,12 @@
 ### ER/UML Diagram 
 ***
 
-![UML Diagram](images/UML Diagram.JPG)
+<img src="images/UML diagram.JPG" alt="UML Diagram" width="600"/>
 
-### Explanation of Relationships in ER/UML
+### Explanation of Entities and Relationships in ER/UML
 ***
+
+
 
 ### Relational Schema
 ***
