@@ -4,6 +4,8 @@
 ### ER/UML Diagram 
 ***
 
+![UML Diagram](./images/"UML Diagram.JPG")
+
 ### Explanation of Relationships in ER/UML
 ***
 
