@@ -17,6 +17,11 @@
 
 #### Relationship Descriptions and Assumptions 
 
+1. Favorite trails: A many to many relationship between the users and the trails. Each user can have selected 0 to any number of trails to be their favorite. 0 to any number of users can select the same trail to be a favorite. 
+2. Visited parks: A many to many relationship between the users and the trails. Each user can select 0 to any number of parks to be their favorite. A park can be visited by 0 to any number of users. 
+3. Park’s trails: A many to one relationship between parks and trails. Every trail must belong to a park and only one park. A park must have at least 1 trail. 
+4. Park biodiversity: A many to many relationship between parks and species that represents which species have been seen in each park. Each species must be in at least one park, but can also be seen in any number of parks. Additionally, each park must have at least one species associated with it, but there is no limit to the number of species in a park.  
+5. Park’s campsites: A many one relationship between parks and campsites. Each campsite must be in one and only one park. A park must have at least one campsite, but there is no limit to the number of campsites. 
 
 
 ### Relational Schema
