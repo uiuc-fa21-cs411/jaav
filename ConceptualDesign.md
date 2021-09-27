@@ -9,7 +9,7 @@
 ### Explanation of Entities and Relationships in ER/UML
 ***
 #### Entity Descriptions and Assumptions 
-1. Users: each user consists of a username which uniquely identifies users, and a password that allows them to access the database. Both of these values are strings. 
+1. Users: each user consists of a username which uniquely identifies users, and a password that allows them to access the application and store their favorite parks and trails. Both of these values are strings. 
 2. Parks: Each park is uniquely identified by its name, which is the primary key. This entity contains data related to that park including the decimal longitude and latitude of the centroid of the park, the size in acres of the park and the total number of visitors to the park since the park opened which must be an integer. 
 3. Campsites: Each campsite is uniquely identified by its name as a primary key. This works because every campsite name is prefixed with the name of the park and no park has two campsites with the same name. The campsite name will be a string. Each campsite also includes a foreign key which is the park where the campsite is located, which is a string and a foregin key connecting it to the parks table. Finally, each campsite has a decimal price, which is a typical overnight fee for one site. There is also the decimal capacity of the campground. 
 4. Trials: Each trail's primary key is the name of the trail which is a unique string for US national parks. Trails also contain a foreign key which references the name of the park where the trail  is found. Finally, each trail includes three decimal values that describe the trail: the elevation gain, the length (in miles), and the popularity which is a measure calculated and published by alltrails.com. 
