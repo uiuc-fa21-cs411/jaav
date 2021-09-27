@@ -4,7 +4,8 @@
 ### ER/UML Diagram 
 ***
 
-<img width="570" alt="Screen Shot 2021-09-26 at 7 26 16 PM" src="https://user-images.githubusercontent.com/37272048/134829740-ec9c865e-6ea0-4ea1-8a45-117e3b496a39.png">
+<img width="570" alt="Screen Shot 2021-09-26 at 8 32 30 PM" src="https://user-images.githubusercontent.com/37272048/134832897-8ec0f0ab-d283-44a2-b878-b50f9383070a.png">
+
 
 ### Explanation of Entities and Relationships in ER/UML
 ***
