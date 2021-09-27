@@ -17,11 +17,11 @@
 
 #### Relationship Descriptions and Assumptions 
 
-1. Favorite trails: A many to many relationship between the users and the trails. Each user can have selected 0 to any number of trails to be their favorite. 0 to any number of users can select the same trail to be a favorite. 
-2. Visited parks: A many to many relationship between the users and the trails. Each user can select 0 to any number of parks to be their favorite. A park can be visited by 0 to any number of users. 
+1. Favorite trails: A many to many relationship between the users and the trails. Each user can have selected zero to any number of trails to be their favorite. Zero to any number of users can select the same trail to be a favorite. This relationship also contains a int atrribute (which will always be 0 for false or 1 for true) which shows whether or not the user has visited the trail.
+2. Visited parks: A many to many relationship between the users and the parks. Each user can select zero to any number of parks to be their favorite. A park can be visited by zero to any number of users. 
 3. Park’s trails: A many to one relationship between parks and trails. Every trail must belong to a park and only one park. A park must have at least 1 trail. 
 4. Park biodiversity: A many to many relationship between parks and species that represents which species have been seen in each park. Each species must be in at least one park, but can also be seen in any number of parks. Additionally, each park must have at least one species associated with it, but there is no limit to the number of species in a park.  
-5. Park’s campsites: A many one relationship between parks and campsites. Each campsite must be in one and only one park. A park must have at least one campsite, but there is no limit to the number of campsites. 
+5. Park’s campsites: A many to one relationship between parks and campsites. Each campsite must be in one and only one park. A park must have at least one campsite, but there is no limit to the number of campsites. 
 
 
 ### Relational Schema
@@ -36,9 +36,9 @@ Campsites(CampsiteName:VARCHAR(255) [PK], ParkName:VARCHAR(255) [FK to Parks.Par
 
 Species(ScientificName:VARCHAR(255), ParkName:VARCHAR(255) [FK to Parks.ParkName], CommonName:VARCHAR(255), Nativeness:VARCHAR(255), Category:VARCHAR(255))
 
-VisitedParks(Username:VARCHAR(255)[FK to Users.ParkName], ParkName:VARCHAR(255) [FK to Parks.ParkName])
+VisitedParks(Username:VARCHAR(255)[FK to Users.Username], ParkName:VARCHAR(255) [FK to Parks.ParkName])
 
-FavoriteTrails(TrailName:VARCHAR(255) [FK to Trails.TrailName], ParkName:VARCHAR(255) [FK to Parks.ParkName], Visited:Boolean)
+FavoriteTrails(Username:VARCHAR(255)[FK to Users.Username], TrailName:VARCHAR(255) [FK to Trails.TrailName], Visited:INT)
 ```
 
 
