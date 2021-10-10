@@ -40,6 +40,8 @@ Species(ScientificName:VARCHAR(255), ParkName:VARCHAR(255) [FK to Parks.ParkName
 VisitedParks(Username:VARCHAR(255)[FK to Users.Username], ParkName:VARCHAR(255) [FK to Parks.ParkName])
 
 FavoriteTrails(Username:VARCHAR(255)[FK to Users.Username], TrailName:VARCHAR(255) [FK to Trails.TrailName], Visited:INT)
+
+ParkBiodiversity(Park:VARCHAR(255) references Parks (Parkname), Biodiversity:VARCHAR(255) references Species (ScientificName))
 ```
 
 
