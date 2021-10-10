@@ -18,3 +18,8 @@ For our project, we will be developing a web app which will locate nearby outdoo
 ### Conceputal Design 
 ***
 [Project design](https://github.com/uiuc-fa21-cs411/jaav/blob/main/ConceptualDesign.md) 
+
+### Database Design
+***
+
+Stage 3: [Database Design](https://github.com/uiuc-fa21-cs411/jaav/blob/main/JAAV-DatabaseDesign.md) 
