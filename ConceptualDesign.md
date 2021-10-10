@@ -42,6 +42,8 @@ VisitedParks(Username:VARCHAR(255)[FK to Users.Username], ParkName:VARCHAR(255)[
 FavoriteTrails(Username:VARCHAR(255)[FK to Users.Username], TrailName:VARCHAR(255) [FK to Trails.TrailName], Visited:INT)
 
 ParkBiodiversity(Park:VARCHAR(255) [FK to Parks.ParkName], Biodiversity:VARCHAR(255)[FK to Species.ScientificName])
+
+User(Username:VARCHAR(255) [PK], Password:VARCHAR(255))
 ```
 
 
