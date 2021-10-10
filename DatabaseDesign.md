@@ -12,9 +12,9 @@ CREATE TABLE parks (value type);
 ```
 
 ### Two Advanced Queries: 
-1. *Descibe what the first query is and does*
+1. *Descibe what the first query is and does* \
 ![screenshot of first 15 rows of first advanced query](/img/file_path)
-2. *Describe what the second query is and does*
+2. *Describe what the second query is and does* \
 ![screenshot of first 15 rows of second advanced query](/img/file_path)
 
 ### Indexing: 
