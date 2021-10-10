@@ -35,13 +35,13 @@ Trails(TrailName:VARCHAR(255) [PK], ParkName:VARCHAR(255) [FK to Parks.ParkName]
 
 Campsites(CampsiteName:VARCHAR(255) [PK], ParkName:VARCHAR(255) [FK to Parks.ParkName], Price:DECIMAL(15,5), Capacity:DECIMAL(15,5))
 
-Species(ScientificName:VARCHAR(255), ParkName:VARCHAR(255) [FK to Parks.ParkName], CommonName:VARCHAR(255), Nativeness:VARCHAR(255), Category:VARCHAR(255))
+Species(ScientificName:VARCHAR(255)[PK], ParkName:VARCHAR(255) [FK to Parks.ParkName], CommonName:VARCHAR(255), Nativeness:VARCHAR(255), Category:VARCHAR(255))
 
-VisitedParks(Username:VARCHAR(255)[FK to Users.Username], ParkName:VARCHAR(255) [FK to Parks.ParkName])
+VisitedParks(Username:VARCHAR(255)[FK to Users.Username], ParkName:VARCHAR(255)[FK to Parks.ParkName])
 
 FavoriteTrails(Username:VARCHAR(255)[FK to Users.Username], TrailName:VARCHAR(255) [FK to Trails.TrailName], Visited:INT)
 
-ParkBiodiversity(Park:VARCHAR(255) references Parks (Parkname), Biodiversity:VARCHAR(255) references Species (ScientificName))
+ParkBiodiversity(Park:VARCHAR(255) [FK to Parks.ParkName], Biodiversity:VARCHAR(255)[FK to Species.ScientificName])
 ```
 
 
