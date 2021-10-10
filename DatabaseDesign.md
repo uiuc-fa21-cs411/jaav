@@ -1,6 +1,5 @@
 
 # Database Design
-***
 
 ### To access database/project: 
 * ssh jananir2@20.88.14.242
