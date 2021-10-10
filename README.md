@@ -22,4 +22,4 @@ For our project, we will be developing a web app which will locate nearby outdoo
 ### Database Design
 ***
 
-Stage 3: [Database Design](https://github.com/uiuc-fa21-cs411/jaav/blob/main/JDatabaseDesign.md) 
+Stage 3: [Database Design](https://github.com/uiuc-fa21-cs411/jaav/blob/main/DatabaseDesign.md) 
