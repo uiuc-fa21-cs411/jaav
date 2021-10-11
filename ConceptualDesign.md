@@ -46,4 +46,21 @@ ParkBiodiversity(Park:VARCHAR(255) [FK to Parks.ParkName], Biodiversity:VARCHAR(
 User(Username:VARCHAR(255) [PK], Password:VARCHAR(255))
 ```
 
+### DDL controls
+***
+```create table Campsites(CampsiteName VARCHAR(255) primary key, ParkName VARCHAR(255) references Parks(ParkName),Price DECIMAL(15,5),Capacity DECIMAL(15,5));
 
+create table Parks(ParkName VARCHAR(255) primary key, Latitude DECIMAL(15,5), Longitude DECIMAL(15,5),Size DECIMAL(15,5),TotalVisitors INT));
+
+create table Trails(TrailName VARCHAR(255) primary key, ParkName VARCHAR(255) refrences Park(ParkName), Elevation DECIMAL(15,5), Length DECIMAL(15,5), Popularity DECIMAL(15,5));
+
+Create table Species(ScientificName VARCHAR(255) primary key, ParkName VARCHAR(255) references Parks(ParkName), CommonName VARCHAR(255), Nativeness VARCHAR(255), Category VARCHAR(255));
+
+Create table VisitedParks(Username VARCHAR(255) references Users(Username), ParkName VARCHAR(255) references Parks(ParkName));
+
+Create table FavoriteTrails(Username VARCHAR(255) references Users(Username), TrailName VARCHAR(255) references Trails(TrailName), Visited INT);
+
+Create table ParkBiodiversity(Park VARCHAR(255) references Parks(Parkname), Biodiversity VARCHAR(255) references Species (ScientificName));
+
+Create table Users(Username VARCHAR(255) primary key, Password VARCHAR(255));
+```
