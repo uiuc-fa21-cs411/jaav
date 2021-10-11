@@ -24,6 +24,7 @@ ORDER BY CrowdRatio
 
 ```
 ![screenshot of first 15 rows of first advanced query](/img/file_path)
+
 2.  Find easy nearby trails. This computes the trails that are less than 5 miles and less than 500ft elevation. It also only looks in national parks that are within +/- 10 degrees longitude and latitude of Champaign. 
 ```
 /*This is untested, also, the subquery is slightly unecessary, but I think it is okay??? let me know thoughts or corrections -Alan*/
