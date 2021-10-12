@@ -4,7 +4,7 @@
 ### ER/UML Diagram 
 ***
 
-<img width="570" alt="Screen Shot 2021-09-26 at 8 32 30 PM" src="https://user-images.githubusercontent.com/37272048/134832897-8ec0f0ab-d283-44a2-b878-b50f9383070a.png">
+<img width="570" alt="Trailture UML Diagram" src="/img/trailture">
 
 
 ### Explanation of Entities and Relationships in ER/UML
