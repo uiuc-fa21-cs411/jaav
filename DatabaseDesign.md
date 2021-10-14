@@ -31,10 +31,10 @@ Create table Users(Username VARCHAR(255) primary key, Password VARCHAR(255));
 ```
 /*This is untested*/
 
-SELECT Parks.ParkName,  count(ParkBiodiversity.ScientificName) AS NativeCount
-FROM Parks INNER JOIN ParkBiodiversity ON Parks.ParkName = ParkBiodiversity.ParkName
-WHERE ParkBiodiversity.Nativeness = “Native”
-GROUP BY ParkName
+SELECT Parks.ParkName, count(ParkBiodiversity.Biodiversity) AS NativeCount 
+FROM Parks INNER JOIN ParkBiodiversity ON Parks.ParkName = ParkBiodiversity.Park 
+WHERE ParkBiodiversity.Nativeness = 'Native' 
+GROUP BY ParkName 
 ORDER BY NativeCount desc;
 
 
