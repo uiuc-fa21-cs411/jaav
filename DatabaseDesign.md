@@ -26,6 +26,8 @@ Create table ParkBiodiversity(Park VARCHAR(255) references Parks(Parkname), Biod
 Create table Users(Username VARCHAR(255) primary key, Password VARCHAR(255));
 ```
 
+Tables with 1000+ rows: Trails, Species, Campsites, ParkBiodiversity
+
 ### Two Advanced Queries: 
 1. Rank the parts by the number of native species. This uses a join and aggregation
 ```
