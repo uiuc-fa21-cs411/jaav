@@ -38,7 +38,7 @@ ORDER BY NativeCount desc;
 
 
 ```
-![screenshot of first 15 rows of first advanced query](/img/Screen Shot 2021-10-21 at 9.51.35 PM.png)
+![screenshot of first 15 rows of first advanced query](https://github.com/uiuc-fa21-cs411/jaav/blob/main/img/Screen%20Shot%202021-10-21%20at%2010.06.49%20PM.png?raw=true)
 
 2.  Find easy nearby trails. This computes the trails that are less than 5 miles and less than 500ft elevation. It also only looks in national parks that are within +/- 10 degrees longitude and latitude of Champaign. This uses a subquery and join
 ```
@@ -50,7 +50,7 @@ WHERE Trails.Length > 5 AND Trails.Elevation > 700 and Parks.ParkName IN
 ORDER BY Trails.Popularity;
 
 ```
-![screenshot of first 15 rows of second advanced query](/img/Screen Shot 2021-10-21 at 9.54.43 PM.png)
+![screenshot of first 15 rows of second advanced query](https://github.com/uiuc-fa21-cs411/jaav/blob/main/img/Screen%20Shot%202021-10-21%20at%2010.07.04%20PM.png)
 
 ### Indexing: 
 What was the baseline perfomace for each query? 
