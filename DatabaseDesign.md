@@ -29,7 +29,7 @@ Create table Users(Username VARCHAR(255) primary key, Password VARCHAR(255));
 Tables with 1000+ rows: Trails, Species, Campsites, ParkBiodiversity
 
 ### Two Advanced Queries: 
-1. Rank the parts by the number of native species. This uses a join and aggregation
+1. Rank the parks by the number of native species. This uses a join and aggregation
 ```
 
 SELECT Parks.ParkName, count(ParkBiodiversity.Biodiversity) AS NativeCount 
@@ -42,7 +42,7 @@ ORDER BY NativeCount desc;
 ```
 ![screenshot of first 15 rows of first advanced query](https://github.com/uiuc-fa21-cs411/jaav/blob/main/img/Screen%20Shot%202021-10-21%20at%2010.06.49%20PM.png?raw=true)
 
-2.  Find easy nearby trails. This computes the trails that are less than 5 miles and less than 500ft elevation. It also only looks in national parks that are within +/- 10 degrees longitude and latitude of Champaign. This uses a subquery and join
+2.  Find easy nearby trails. This computes the trails that are greater than 5 miles and greater than 700ft elevation. It also only looks in national parks that are within +/- 2 degrees longitude and latitude of Yosemite National Park (38 degrees north, 120 degrees west). This uses a subquery and join.
 ```
 
 SELECT Parks.ParkName, Trails.TrailName, Trails.Length, Trails.Elevation 
@@ -56,8 +56,8 @@ ORDER BY Trails.Popularity;
 
 ### Indexing: 
 What was the baseline perfomace for each query? 
-1. The overall time was .17 seconds, the most significant source of time in this query is the filtering step (where statement). This is where many different entries need to be looked up in order to compare them. This is also the area where indexing helps the most to improve performance. This step took .93 seconds with the default indexing. 
-2. Without creating an index, this query takes 2ms to run. The majority of that time is spent filtering the trails (1.5ms) and a small amount of time (.063)ms is spent filtering the parks. This is because the trails dataset has several thousand rows and the parks table only has around 50. For this query it is already very fast, so it might be hard to significantly improve the performance. 
+1. For Query 1, the overall time was .17 seconds, the most significant source of time in this query is the filtering step (where statement). This is where many different entries need to be looked up in order to compare them. This is also the area where indexing helps the most to improve performance. This step took .93 seconds with the default indexing. 
+2. For Query 2, without creating an index, this query takes 2ms to run. The majority of that time is spent filtering the trails (1.5ms) and a small amount of time (.063)ms is spent filtering the parks. This is because the trails dataset has several thousand rows and the parks table only has around 50. For this query it is already very fast, so it might be hard to significantly improve the performance. 
 
 What 3 indexing designs did we analyze for each query? 
 
