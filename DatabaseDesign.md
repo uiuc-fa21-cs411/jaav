@@ -61,11 +61,11 @@ What was the baseline perfomace for each query?
 
 ![query1index1](https://user-images.githubusercontent.com/37272048/138566798-116f528b-c519-4cec-a07c-3e63b650d917.png)
 
-1. For Query 1, the overall time was .17 seconds, the most significant source of time in this query is the filtering step (where statement). This is where many different entries need to be looked up in order to compare them. This is also the area where indexing helps the most to improve performance. This step took .93 seconds with the default indexing. The step that took the least amount of time was the single-row index lookup on Parks which is evidenced by the cost = 0.25 and time lapsed being 0.000 to 0.000 seconds.
+1. For Query 1, the overall time was .17 seconds for one row set, the most significant source of time in this query is the filtering step (where statement). This is where many different entries need to be looked up in order to compare them. This is also the area where indexing helps the most to improve performance. This step took .93 seconds with the default indexing. The step that took the least amount of time was the single-row index lookup on Parks which is evidenced by the cost = 0.25 and time lapsed being 0.000 to 0.000 seconds.
 
 <img width="1440" alt="Query2_defaultIndex" src="https://user-images.githubusercontent.com/35547998/138566889-fe0dcd40-085e-4ef7-b406-55540511a805.png">
 
-2. For Query 2, the overall time was .02 seconds. The most significant source of time in this query is the step where the length of each trail needs to be compared to the average length for all trails. This occurs in the where clause, and with indexing, the performance can be improved. This total time elapsed during this step is .014 to (where the table scan on Trails occurs) to 2.645 seconds (during the filter step).
+2. For Query 2, the overall time was .02 seconds for one row set. The most significant source of time in this query is the step where the length of each trail needs to be compared to the average length for all trails. This occurs in the where clause, and with indexing, the performance can be improved. This total time elapsed during this step is .014 to (where the table scan on Trails occurs) to 2.645 seconds (during the filter step), which is the greatest amount of elapsed for any of the steps. Since we are doing an aggregation step on two different tables and joining them after that, there is some repetitiveness in terms of time complexity. This could lead to slower times.
 
 What 3 indexing designs did we analyze for each query? 
 
