@@ -51,8 +51,7 @@ NATURAL JOIN
 (SELECT AVG(Trails.Popularity) as ShortTrailPopularity, Trails.ParkName from Trails where Trails.Length < (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q2;
 
 ```
-![screenshot of first 15 rows of second advanced query](https://github.com/uiuc-fa21-cs411/jaav/blob/main/img/Screen%20Shot%202021-10-21%20at%2010.07.04%20PM.png)
-
+<img width="1440" alt="query2" src="https://user-images.githubusercontent.com/37272048/138566262-f4e0ec2f-1227-407e-8d77-e9da781e1ed9.png">
 ### Indexing: 
 What was the baseline perfomace for each query? 
 1. For Query 1, the overall time was .17 seconds, the most significant source of time in this query is the filtering step (where statement). This is where many different entries need to be looked up in order to compare them. This is also the area where indexing helps the most to improve performance. This step took .93 seconds with the default indexing. 
