@@ -61,11 +61,11 @@ What was the baseline perfomace for each query?
 
 ![query1index1](https://user-images.githubusercontent.com/37272048/138566798-116f528b-c519-4cec-a07c-3e63b650d917.png)
 
-1. For Query 1, the overall time was .17 seconds for one row set, the most significant source of time in this query is the filtering step (where statement). This is where many different entries need to be looked up in order to compare them. This is also the area where indexing helps the most to improve performance. This step took .93 seconds with the default indexing. The step that took the least amount of time was the single-row index lookup on Parks which is evidenced by the cost = 0.25 and time lapsed being 0.000 to 0.000 seconds.
+1. For Query 1, the overall time was .17 seconds, the most significant source of time in this query is the filtering step (where statement). This is where many different entries need to be looked up in order to compare them. This is also the area where indexing helps the most to improve performance. This step took .93 seconds with the default indexing. The step that took the least amount of time was the single-row index lookup on Parks which is evidenced by the cost = 0.25 and time lapsed being 0.000 to 0.000 seconds.
 
 <img width="1440" alt="Query2_defaultIndex" src="https://user-images.githubusercontent.com/35547998/138566889-fe0dcd40-085e-4ef7-b406-55540511a805.png">
 
-2. For Query 2, the overall time was .02 seconds for one row set. The most significant source of time in this query is the step where the length of each trail needs to be compared to the average length for all trails. This occurs in the where clause, and with indexing, the performance can be improved. This total time elapsed during this step is .014 to (where the table scan on Trails occurs) to 2.645 seconds (during the filter step), which is the greatest amount of elapsed for any of the steps. Since we are doing an aggregation step on two different tables and joining them after that, there is some repetitiveness in terms of time complexity. This could lead to slower times.
+2. For Query 2, the overall time was .02 seconds. The most significant source of time in this query is the step where the length of each trail needs to be compared to the average length for all trails. This occurs in the where clause, and with indexing, the performance can be improved. This total time elapsed during this step is .014 to (where the table scan on Trails occurs) to 2.645 seconds (during the filter step).
 
 What 3 indexing designs did we analyze for each query? 
 
@@ -91,14 +91,16 @@ Query 2
 
 1. Index on Trail Name and Popularity
 <img width="1435" alt="Query2_Trails(TrailName, Popularity)" src="https://user-images.githubusercontent.com/35547998/138566527-eada7cb2-c9cc-438a-99e9-06f653137e61.png">
+1 row in set(0.01 sec) *adding it here because screenshot couldn't fit it
 
 2. Index on Trail Length and Park Name
 <img width="1439" alt="Query2_Trails(Length, ParkName)" src="https://user-images.githubusercontent.com/35547998/138566565-3f309d09-a920-42d5-b200-d2c7881fe201.png">
+1 row in set(0.01 sec) *adding it here because screenshot couldn't fit it
 
 3. Index on Trail Length and Popularity
 <img width="1440" alt="Query2_Trails(Length, Popularity)" src="https://user-images.githubusercontent.com/35547998/138566596-b7285455-5341-4e36-be63-b3061aeea11f.png"> 
-
+1 row in set(0.01 sec) *adding it here because screenshot couldn't fit it
 
 What index design did we choose for each query? 
 - Query 1: We settled on index design 2 which was fast and also uses a b-tree which we think will be a better overall implementation. It is more extensible for different types of filters or aggregations on this table. It also uses indices on the foreign keys in this table which will likely be accessed the most. Finally, unlike design 1, it doesn’t have any extra indices which might slow down the query by adding excess overhead. 
-- Query 2: 
+- Query 2: We decided to use the index with the Trail Length and Popularity, primarily because of the speed and the nature of our query's results. We realized that the most unique values were the average popularity and the length, so it made sense to use that as our key values. Additionally, for the index on the trail length and park have a time of 0.018-0.506 for the index scan, which is our evaluation metric. Becuase this value is lower than the other index scan lengths, it makes sense that we would consider this index rather than the other ones.
