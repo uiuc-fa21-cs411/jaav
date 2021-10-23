@@ -68,15 +68,14 @@ This approach was only moderately better than the default approach. (.16 seconds
 This is the exact same (.16 seconds) as the previous index design except that it uses a hash-based index as opposed to a btree. Btree is good for querying large amounts of data, especially ranged-based queries. A hash index is good because it generally will use less pointer arithmetic than the B-tree. It performs well when using an “equals” filter. In this base, our query is computing a “equals” filter which is probably one reason that the hash-index is fairly effective and on par with the b-tree performance. 
 
 Query 2
-1. Index on the park_name, longitude and latitude \
-This design produced no significant difference from not including an index at all. This is probably because the parks table only has 56 rows which can be accessed extremely quickly without the need for indices. 
-2. Design 1 and additionally adding a index on the trial park_name and trail_name \
-This design is also not any faster than the previous or the default. This is probably because it suffers from having too many indices, meaning some of them are unnecessary (3 in parks and 2 in trails). 
-3. Only an index on park_name and trail_name in trails \
-This design achieved an overall time of 1.1 ms and a filtering time for trails of only .3 ms. This is significantly faster than both the default version and the other index designs. It also makes sense that this is the best design since it indexes the slowest step of the query and doesn’t include any unnecessary indices. 
+
+<img width="1435" alt="Query2_Trails(TrailName, Popularity)" src="https://user-images.githubusercontent.com/35547998/138566527-eada7cb2-c9cc-438a-99e9-06f653137e61.png">
+
+<img width="1439" alt="Query2_Trails(Length, ParkName)" src="https://user-images.githubusercontent.com/35547998/138566565-3f309d09-a920-42d5-b200-d2c7881fe201.png">
+
+<img width="1440" alt="Query2_Trails(Length, Popularity)" src="https://user-images.githubusercontent.com/35547998/138566596-b7285455-5341-4e36-be63-b3061aeea11f.png">
+
 
 What index design did we choose for each query? 
 - Query 1: We settled on index design 2 which was fast and also uses a b-tree which we think will be a better overall implementation. It is more extensible for different types of filters or aggregations on this table. It also uses indices on the foreign keys in this table which will likely be accessed the most. Finally, unlike design 1, it doesn’t have any extra indices which might slow down the query by adding excess overhead. 
-- Query 2: Index design 3 was almost twice as fast as the standard implementation (1.1ms vs 2ms). This implementation will likely not only be fast for this specific query, but also in general. Trail_name is probably the most commonly queried column in the trails table. Since there are many rows in the trails table, indexing the table makes a lot of sense. While the difference between 1 and 2ms is not a lot, in a table with significantly more data, this difference could be very important. 
-
-
+- Query 2: 
