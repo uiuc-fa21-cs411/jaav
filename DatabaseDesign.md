@@ -101,6 +101,21 @@ Query 2
 <img width="1440" alt="Query2_Trails(Length, Popularity)" src="https://user-images.githubusercontent.com/35547998/138566596-b7285455-5341-4e36-be63-b3061aeea11f.png"> 
 1 row in set(0.01 sec) *adding it here because screenshot couldn't fit it
 
+
+Table lengths
+1. 
+<img width="334" alt="Screen Shot 2021-10-23 at 2 13 20 PM" src="https://user-images.githubusercontent.com/70246739/138568707-d6534ed3-d712-4ae8-86c0-1c899443c564.png">
+
+2.
+<img width="277" alt="Screen Shot 2021-10-23 at 2 13 08 PM" src="https://user-images.githubusercontent.com/70246739/138568726-06f0c009-6e45-4d4b-a4b4-27f7ea9ac8fc.png">
+
+3.
+<img width="277" alt="Screen Shot 2021-10-23 at 2 12 57 PM" src="https://user-images.githubusercontent.com/70246739/138568736-4e99c6b6-c120-4266-ba82-7b2aabe51926.png">
+
+4.
+<img width="291" alt="Screen Shot 2021-10-23 at 2 12 46 PM" src="https://user-images.githubusercontent.com/70246739/138568743-51ac413f-00c9-4d28-a725-569d70811334.png">
+
+
 What index design did we choose for each query? 
 - Query 1: We settled on index design 2 which was fast and also uses a b-tree which we think will be a better overall implementation. It is more extensible for different types of filters or aggregations on this table. It also uses indices on the foreign keys in this table which will likely be accessed the most. Finally, unlike design 1, it doesn’t have any extra indices which might slow down the query by adding excess overhead. 
 - Query 2: We decided to use the index with the Trail Length and Popularity, primarily because of the speed and the nature of our query's results. We realized that the most unique values were the average popularity and the length, so it made sense to use that as our key values. Additionally, for the index on the trail length and park have a time of 0.018-0.506 for the index scan, which is our evaluation metric. Becuase this value is lower than the other index scan lengths, it makes sense that we would consider this index rather than the other ones.
