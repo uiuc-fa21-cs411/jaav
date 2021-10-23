@@ -54,12 +54,23 @@ NATURAL JOIN
 <img width="1440" alt="query2" src="https://user-images.githubusercontent.com/37272048/138566262-f4e0ec2f-1227-407e-8d77-e9da781e1ed9.png">
 ### Indexing: 
 What was the baseline perfomace for each query? 
+
+
+
+
+
+![query1index1](https://user-images.githubusercontent.com/37272048/138566798-116f528b-c519-4cec-a07c-3e63b650d917.png)
+
 1. For Query 1, the overall time was .17 seconds, the most significant source of time in this query is the filtering step (where statement). This is where many different entries need to be looked up in order to compare them. This is also the area where indexing helps the most to improve performance. This step took .93 seconds with the default indexing. 
 2. For Query 2, without creating an index, this query takes 2ms to run. The majority of that time is spent filtering the trails (1.5ms) and a small amount of time (.063)ms is spent filtering the parks. This is because the trails dataset has several thousand rows and the parks table only has around 50. For this query it is already very fast, so it might be hard to significantly improve the performance. 
 
 What 3 indexing designs did we analyze for each query? 
 
 Query 1
+
+
+
+
 1. Index on all columns in biodiversity table: Park, Biodiversity, Nativeness \
 This index design performed worse than the default design. It took .19 seconds overall and .103 seconds to do the filtering (which is the part affected by the new index system).  This index design puts an index on every column of the biodiversity table. We are filtering about 10,000 rows from over 100,000 rows. Extra indices are probably counter productive since we are mostly looking at the table  in general as opposed to just a few specific points.
 2. Index on only Park and biodiversity \
