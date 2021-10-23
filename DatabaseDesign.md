@@ -42,14 +42,13 @@ ORDER BY NativeCount desc;
 ```
 ![screenshot of first 15 rows of first advanced query](https://github.com/uiuc-fa21-cs411/jaav/blob/main/img/Screen%20Shot%202021-10-21%20at%2010.06.49%20PM.png?raw=true)
 
-2.  Find easy nearby trails. This computes the trails that are greater than 5 miles and greater than 700ft elevation. It also only looks in national parks that are within +/- 2 degrees longitude and latitude of Yosemite National Park (38 degrees north, 120 degrees west). This uses a subquery and join.
+2.  Find easy nearby trails. This computes the trails that are greater than 5 miles and greater than 700ft elevation. It also only looks in national parks that are within +/- 2 degrees longitude and latitude of Yosemite National Park (38 degrees north, 120 degrees west). This uses a subquery and join.(VINEET UPDATE THIS)
 ```
 
-SELECT Parks.ParkName, Trails.TrailName, Trails.Length, Trails.Elevation 
-FROM Parks INNER JOIN Trails on Parks.ParkName = Trails.ParkName 
-WHERE Trails.Length > 5 AND Trails.Elevation > 700 and Parks.ParkName IN 
-	(SELECT ParkName FROM Parks WHERE Latitude > 38 - 2 AND Latitude < 38+2 AND Longitude < -120+2 AND Longitude > -120-2) 
-ORDER BY Trails.Popularity;
+SELECT * FROM (SELECT AVG(Trails.Popularity) as longTrailPopularity, Trails.ParkName 
+FROM Trails WHERE Trails.Length >= (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName)  as q1 
+NATURAL JOIN 
+(SELECT AVG(Trails.Popularity) as ShortTrailPopularity, Trails.ParkName from Trails where Trails.Length < (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q2;
 
 ```
 ![screenshot of first 15 rows of second advanced query](https://github.com/uiuc-fa21-cs411/jaav/blob/main/img/Screen%20Shot%202021-10-21%20at%2010.07.04%20PM.png)
