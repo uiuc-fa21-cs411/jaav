@@ -68,7 +68,7 @@ What was the baseline perfomace for each query?
 
 <img width="1440" alt="Query2_defaultIndex" src="https://user-images.githubusercontent.com/35547998/138566889-fe0dcd40-085e-4ef7-b406-55540511a805.png">
 
-2. For Query 2, without creating an index, this query takes 2ms to run. The majority of that time is spent filtering the trails (1.5ms) and a small amount of time (.063)ms is spent filtering the parks. This is because the trails dataset has several thousand rows and the parks table only has around 50. For this query it is already very fast, so it might be hard to significantly improve the performance. 
+2. For Query 2, the overall time was .02 seconds. The most significant source of time in this query is the step where the length of each trail needs to be compared to the average length for all trails. This occurs in the where clause, and with indexing, the performance can be improved.
 
 What 3 indexing designs did we analyze for each query? 
 
@@ -94,7 +94,6 @@ Query 2
 
 1. Index on Trail Name and Popularity
 <img width="1435" alt="Query2_Trails(TrailName, Popularity)" src="https://user-images.githubusercontent.com/35547998/138566527-eada7cb2-c9cc-438a-99e9-06f653137e61.png">
-For Query 2, the overall time was .02 seconds. The most significant source of time in this query is the step where the length of each trail needs to be compared to the average length for all trails. This occurs in the where clause, and with indexing, the performance improved and was reduced to .01 seconds.
 
 2. Index on Trail Length and Park Name
 <img width="1439" alt="Query2_Trails(Length, ParkName)" src="https://user-images.githubusercontent.com/35547998/138566565-3f309d09-a920-42d5-b200-d2c7881fe201.png">
