@@ -75,13 +75,19 @@ What 3 indexing designs did we analyze for each query?
 Query 1
 
 
-
-
-1. Index on all columns in biodiversity table: Park, Biodiversity, Nativeness \
+1. Index on all columns in biodiversity table: Park, Biodiversity, Nativeness\
+```create index bio_index on ParkBiodiversity (Park, Biodiversity, Nativeness);```
+![q1](https://user-images.githubusercontent.com/37272048/138567218-755887a9-520e-4088-8e88-94b26e6da8c9.png)
 This index design performed worse than the default design. It took .19 seconds overall and .103 seconds to do the filtering (which is the part affected by the new index system).  This index design puts an index on every column of the biodiversity table. We are filtering about 10,000 rows from over 100,000 rows. Extra indices are probably counter productive since we are mostly looking at the table  in general as opposed to just a few specific points.
-2. Index on only Park and biodiversity \
+
+2. Index on only Park and biodiversity\
+```create index bio_index on ParkBiodiversity (Park, Biodiversity);```
+![q2](https://user-images.githubusercontent.com/37272048/138567225-fd15db9c-08cc-4bb2-a94f-c3be38c04774.png)
 This approach was only moderately better than the default approach. (.16 seconds overall as opposed to .17 seconds) This is probably because we unlimited a possibly unnecessary index on the nativeness. Also the reason it is only slightly better is because indices are less effective when querying large numbers of rows like we are aggregating in query 1. 
-3. Index on only park and biodiversity, but a hash-based index \
+
+3. Index on only park and biodiversity, but a hash-based index\
+``` create index bio_index on ParkBiodiversity (Park, Biodiversity) using hash;```
+![q3](https://user-images.githubusercontent.com/37272048/138567234-d3344fa2-0ed3-4fd7-be6c-0903d78f2b16.png)
 This is the exact same (.16 seconds) as the previous index design except that it uses a hash-based index as opposed to a btree. Btree is good for querying large amounts of data, especially ranged-based queries. A hash index is good because it generally will use less pointer arithmetic than the B-tree. It performs well when using an “equals” filter. In this base, our query is computing a “equals” filter which is probably one reason that the hash-index is fairly effective and on par with the b-tree performance. 
 
 Query 2
