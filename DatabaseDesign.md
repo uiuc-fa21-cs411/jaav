@@ -75,17 +75,17 @@ Query 1
 1. Index on all columns in biodiversity table: Park, Biodiversity, Nativeness\
 ```create index bio_index on ParkBiodiversity (Park, Biodiversity, Nativeness);```
 ![q1](https://user-images.githubusercontent.com/37272048/138567218-755887a9-520e-4088-8e88-94b26e6da8c9.png)
-This index design performed worse than the default design. It took .19 seconds overall and .103 seconds to do the filtering (which is the part affected by the new index system).  This index design puts an index on every column of the biodiversity table. We are filtering about 10,000 rows from over 100,000 rows. Extra indices are probably counter productive since we are mostly looking at the table  in general as opposed to just a few specific points.
+
 
 2. Index on only Park and biodiversity\
 ```create index bio_index on ParkBiodiversity (Park, Biodiversity);```
 ![q2](https://user-images.githubusercontent.com/37272048/138567225-fd15db9c-08cc-4bb2-a94f-c3be38c04774.png)
-This approach was only moderately better than the default approach. (.16 seconds overall as opposed to .17 seconds) This is probably because we unlimited a possibly unnecessary index on the nativeness. Also the reason it is only slightly better is because indices are less effective when querying large numbers of rows like we are aggregating in query 1. 
+
 
 3. Index on only park and biodiversity, but a hash-based index\
 ``` create index bio_index on ParkBiodiversity (Park, Biodiversity) using hash;```
 ![q3](https://user-images.githubusercontent.com/37272048/138567234-d3344fa2-0ed3-4fd7-be6c-0903d78f2b16.png)
-This is the exact same (.16 seconds) as the previous index design except that it uses a hash-based index as opposed to a btree. Btree is good for querying large amounts of data, especially ranged-based queries. A hash index is good because it generally will use less pointer arithmetic than the B-tree. It performs well when using an “equals” filter. In this base, our query is computing a “equals” filter which is probably one reason that the hash-index is fairly effective and on par with the b-tree performance. 
+
 
 Query 2
 
@@ -101,8 +101,8 @@ Query 2
 <img width="1440" alt="Query2_Trails(Length, Popularity)" src="https://user-images.githubusercontent.com/35547998/138566596-b7285455-5341-4e36-be63-b3061aeea11f.png"> 
 1 row in set(0.01 sec) *adding it here because screenshot couldn't fit it
 
-
 Table lengths
+
 1. 
 <img width="334" alt="Screen Shot 2021-10-23 at 2 13 20 PM" src="https://user-images.githubusercontent.com/70246739/138568707-d6534ed3-d712-4ae8-86c0-1c899443c564.png">
 
@@ -117,5 +117,7 @@ Table lengths
 
 
 What index design did we choose for each query? 
-- Query 1: We settled on index design 2 which was fast and also uses a b-tree which we think will be a better overall implementation. It is more extensible for different types of filters or aggregations on this table. It also uses indices on the foreign keys in this table which will likely be accessed the most. Finally, unlike design 1, it doesn’t have any extra indices which might slow down the query by adding excess overhead. 
-- Query 2: We decided to use the index with the Trail Length and Popularity, primarily because of the speed and the nature of our query's results. We realized that the most unique values were the average popularity and the length, so it made sense to use that as our key values. Additionally, for the index on the trail length and park have a time of 0.018-0.506 for the index scan, which is our evaluation metric. Becuase this value is lower than the other index scan lengths, it makes sense that we would consider this index rather than the other ones.
+- Query 1: We settled on index design 2 which was fast and also uses a b-tree which we think will be a better overall implementation. It is more extensible for different types of filters or aggregations on this table. It also uses indices on the foreign keys in this table which will likely be accessed the most. Finally, unlike design 1, it doesn’t have any extra indices which might slow down the query by adding excess overhead. For the index of all columns, this index design performed worse than the default design. It took .19 seconds per row and .103 seconds to do the filtering (which is the part affected by the new index system).  This index design puts an index on every column of the biodiversity table. We are filtering about 10,000 rows from over 100,000 rows. Extra indices are probably counter productive since we are mostly looking at the table  in general as opposed to just a few specific points. Then on the index with the Pak's name and the Biodiversity, it took .16 seconds per row as opposed to .17 seconds. This is probably because we unlimited a possibly unnecessary index on the nativeness. Also the reason it is only slightly better is because indices are less effective when querying large numbers of rows like we are aggregating in query 1. Finally, on the index with the same index values as before, but with hashing, the time was the same (.16 seconds) as the previous index design. Btree is good for querying large amounts of data, especially ranged-based queries. A hash index is good because it generally will use less pointer arithmetic than the B-tree. It performs well when using an “equals” filter. In this base, our query is computing a “equals” filter which is probably one reason that the hash-index is fairly effective and on par with the b-tree performance. 
+
+
+- Query 2: We decided to use the index with the Trail Length and Popularity, primarily because of the speed and the nature of our query's results. We realized that the most unique values were the average popularity and the length, so it made sense to use that as our key values. Additionally, for the index on the trail length and park have a time of 0.018-0.506 for the index scan, which is our evaluation metric. Becuase this value is lower than the other index scan lengths, it makes sense that we would consider this index rather than the other ones. For our other two indices, trail length + park name had an index scan time of 0.04 - 0.541 and trail length + popularity has an index scan time of 0.044 - 0.644, which both are a greater magnitude than our actual value. The reason we only look at the index scans as a specific metric, is because all the other aspects of our query are standard, no matter the index type. So the computational cost will only be affected by this single independant variable that we change, i.e the index we pick. Thus, our comparison of the index scans makes the most sense in this context.
