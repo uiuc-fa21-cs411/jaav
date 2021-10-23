@@ -53,7 +53,9 @@ NATURAL JOIN
 
 ```
 <img width="1440" alt="query2" src="https://user-images.githubusercontent.com/37272048/138566262-f4e0ec2f-1227-407e-8d77-e9da781e1ed9.png">
+
 ### Indexing: 
+
 What was the baseline perfomace for each query? 
 
 
