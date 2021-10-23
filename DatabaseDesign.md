@@ -46,14 +46,13 @@ ORDER BY NativeCount desc;
 ```
 
 SELECT * 
-FROM (SELECT AVG(Trails.Popularity) as longTrailPopularity, Trails.ParkName 
-      FROM Trails 
-      WHERE Trails.Length >= (select avg(Trails.Length) as avgLength from Trails) 
-group by Trails.ParkName) as q1 
+FROM(SELECT AVG(Trails.Popularity) as longTrailPopularity, Trails.ParkName 
+FROM Trails 
+WHERE Trails.Length >= (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q1 
 NATURAL JOIN 
-(SELECT AVG(Trails.Popularity) as ShortTrailPopularity, Trails.ParkName from Trails 
-  where Trails.Length < (select avg(Trails.Length) as avgLength from Trails) 
-  group by Trails.ParkName) as q2;
+(SELECT AVG(Trails.Popularity) as ShortTrailPopularity, Trails.ParkName 
+FROM Trails 
+WHERE Trails.Length < (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q2;
 
 ```
 <img width="1440" alt="query2" src="https://user-images.githubusercontent.com/37272048/138566262-f4e0ec2f-1227-407e-8d77-e9da781e1ed9.png">
