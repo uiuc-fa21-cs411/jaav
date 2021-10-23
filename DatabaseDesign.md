@@ -42,8 +42,7 @@ ORDER BY NativeCount desc;
 ```
 ![screenshot of first 15 rows of first advanced query](https://github.com/uiuc-fa21-cs411/jaav/blob/main/img/Screen%20Shot%202021-10-21%20at%2010.06.49%20PM.png?raw=true)
 
-2.  Find easy nearby trails. This computes the trails that are greater than 5 miles and greater than 700ft elevation. It also only looks in national parks that are within +/- 2 degrees longitude and latitude of Yosemite National Park (38 degrees north, 120 degrees west). This uses a subquery and join.(VINEET UPDATE THIS)
-
+2.  Find the average popularity of the "short" and "long" trails for each Park where short Trails are in the bottom 50th percentile of all trail length and long trails are in the top 50th percentile of length. This query uses an aggregation function, join, and subquery.
 ```
 
 SELECT * FROM (SELECT AVG(Trails.Popularity) as longTrailPopularity, Trails.ParkName 
@@ -57,8 +56,6 @@ NATURAL JOIN
 ### Indexing: 
 
 What was the baseline perfomace for each query? 
-
-
 
 
 
@@ -99,7 +96,7 @@ Query 2
 <img width="1439" alt="Query2_Trails(Length, ParkName)" src="https://user-images.githubusercontent.com/35547998/138566565-3f309d09-a920-42d5-b200-d2c7881fe201.png">
 
 3. Index on Trail Length and Popularity
-<img width="1440" alt="Query2_Trails(Length, Popularity)" src="https://user-images.githubusercontent.com/35547998/138566596-b7285455-5341-4e36-be63-b3061aeea11f.png">
+<img width="1440" alt="Query2_Trails(Length, Popularity)" src="https://user-images.githubusercontent.com/35547998/138566596-b7285455-5341-4e36-be63-b3061aeea11f.png"> 
 
 
 What index design did we choose for each query? 
