@@ -43,6 +43,7 @@ ORDER BY NativeCount desc;
 ![screenshot of first 15 rows of first advanced query](https://github.com/uiuc-fa21-cs411/jaav/blob/main/img/Screen%20Shot%202021-10-21%20at%2010.06.49%20PM.png?raw=true)
 
 2.  Find easy nearby trails. This computes the trails that are greater than 5 miles and greater than 700ft elevation. It also only looks in national parks that are within +/- 2 degrees longitude and latitude of Yosemite National Park (38 degrees north, 120 degrees west). This uses a subquery and join.(VINEET UPDATE THIS)
+
 ```
 
 SELECT * FROM (SELECT AVG(Trails.Popularity) as longTrailPopularity, Trails.ParkName 
@@ -62,6 +63,9 @@ What was the baseline perfomace for each query?
 ![query1index1](https://user-images.githubusercontent.com/37272048/138566798-116f528b-c519-4cec-a07c-3e63b650d917.png)
 
 1. For Query 1, the overall time was .17 seconds, the most significant source of time in this query is the filtering step (where statement). This is where many different entries need to be looked up in order to compare them. This is also the area where indexing helps the most to improve performance. This step took .93 seconds with the default indexing. 
+
+<img width="1440" alt="Query2_defaultIndex" src="https://user-images.githubusercontent.com/35547998/138566889-fe0dcd40-085e-4ef7-b406-55540511a805.png">
+
 2. For Query 2, without creating an index, this query takes 2ms to run. The majority of that time is spent filtering the trails (1.5ms) and a small amount of time (.063)ms is spent filtering the parks. This is because the trails dataset has several thousand rows and the parks table only has around 50. For this query it is already very fast, so it might be hard to significantly improve the performance. 
 
 What 3 indexing designs did we analyze for each query? 
