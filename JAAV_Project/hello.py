@@ -14,9 +14,9 @@ def process_query():
     
     mydb = mysql.connector.connect(
     host='localhost',
-    user='vineetc2',
-    database='vineetc2_database',
-    password='')
+    user='awandke2',
+    database='awandke2_database',
+    password='this_is_not_my_passoword')
     
     mycursor = mydb.cursor()
 
