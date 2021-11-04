@@ -16,7 +16,7 @@ def process_query():
     host='localhost',
     user='vineetc2',
     database='vineetc2_database',
-    password='Vineet12345!')
+    password='')
     
     mycursor = mydb.cursor()
 
