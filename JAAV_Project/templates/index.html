@@ -12,12 +12,32 @@
 <br/><br/>
 <div class="row">
   <div class="form-group col">
-    <label for="sql-text-area">Enter A ParkName you want to learn more about!</label>
-    <textarea class="form-control" id="sql-text-area" rows="1">
+    <label for="query-text-area">Enter A ParkName you want to learn more about!</label>
+    <textarea class="form-control" id="query-text-area" rows="1">
     </textarea>
     
   </div>
 </div>
+<div class="row text-center">
+  <div class="col">
+    <button class="btn btn-primary" id="queryButton">Query</button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="form-group col">
+    <label for="insert-text-area">Insert a favorite trail</label>
+    <textarea class="form-control" id="insert-text-area" rows="1">
+    </textarea>
+    
+  </div>
+</div>
+<div class="row text-center">
+  <div class="col">
+    <button class="btn btn-primary" id="insertButton">Insert</button>
+  </div>
+</div>
+
 <div class="row">
   <div class="result-table col">
     <div id="canvas-result-table" style="height: 500px"></div>
@@ -26,9 +46,5 @@
     <div id="canvas-result-plot" style="height: 500px"></div>
   </div>
 </div>
-<div class="row text-center">
-  <div class="col">
-    <button class="btn btn-primary" id="sendButton">Run</button>
-  </div>
-</div>
+
 {% endblock %}
