@@ -27,7 +27,8 @@ def process_query():
     for (ParkName, Latitude, Longitude, Size, State) in mycursor:
         print("{}, {}, {}, {}, {}".format(ParkName, Latitude, Longitude, Size, State))
 
-    #df = pandas.read_sql_query(sql)
+    df = pandas.read_sql_query(query, mydb)
+    print(df)
     mycursor.close()
     mydb.close()
 
@@ -37,22 +38,22 @@ def process_query():
         else:
             return v
 
-    # column_labels = [col for col in df.columns]
-    # per_col_values = [
-    #     [make_valid(value) for value in df[col]]
-    #     for col in df.columns
-    # ]
+    column_labels = [col for col in df.columns]
+    per_col_values = [
+        [make_valid(value) for value in df[col]]
+        for col in df.columns
+    ]
 
-    # response = {
-    #     "query_string": sql,
-    #     "data": {
-    #         "labels": [[col] for col in column_labels],
-    #         "values": per_col_values
-    #     }
-    # }
+    response = {
+        "query_string": query,
+        "data": {
+            "labels": [[col] for col in column_labels],
+            "values": per_col_values
+        }
+    }
 
-    # print(response)
-    return {}
+    print(response)
+    return response
 
 
 

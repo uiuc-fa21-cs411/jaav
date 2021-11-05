@@ -1,4 +1,4 @@
-name: JAAV_Project
+name: Flask_ENV
 channels:
   - defaults
 dependencies:
