@@ -19,18 +19,19 @@ def process_query():
     
     mydb = mysql.connector.connect(
     host='localhost',
-    user='vineetc2',
-    database='vineetc2_database',
-    password='')
+    user='awangoo2',
+    database='awangoo2_database',
+    password='Abhsav2020!')
     
     mycursor = mydb.cursor()
 
     query = "select * from Parks where Parks.ParkName like concat('%%', '%s', '%%')"%user_in.strip()
     if select_q1 == "1":
-        print("reached")
-        query = "select Parks.ParkName from Parks where Parks.ParkName like concat('%%', '%s', '%%')"%user_in.strip()
+        query = "SELECT Parks.ParkName, count(ParkBiodiversity.Biodiversity) AS NativeCount FROM Parks INNER JOIN ParkBiodiversity ON Parks.ParkName = ParkBiodiversity.Park WHERE ParkBiodiversity.Nativeness = 'Native' and Parks.ParkName like concat('%%', '%s', '%%') GROUP BY ParkName ORDER BY NativeCount desc"%user_in.strip()
     elif select_q2 == "1":
-        query = "select Parks.State from Parks where Parks.ParkName like concat('%%', '%s', '%%')"%user_in.strip()
+        query = "SELECT * FROM(SELECT AVG(Trails.Popularity) as longTrailPopularity, Trails.ParkName FROM Trails inner join Parks on Trails.ParkName = Parks.ParkName WHERE Parks.ParkName like concat('%%', '%s', '%%') and Trails.Length >= (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q1 NATURAL JOIN (SELECT AVG(Trails.Popularity) as ShortTrailPopularity, Trails.ParkName FROM Trails WHERE  Trails.Length < (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q2;"%user_in.strip()
+
+
 
     print(query)
     #mycursor.execute(query)
