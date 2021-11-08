@@ -21,7 +21,7 @@ def process_query():
     host='localhost',
     user='awandke2',
     database='awandke2_database',
-    password='-')
+    password='')
     
     mycursor = mydb.cursor()
 
@@ -35,8 +35,8 @@ def process_query():
     print(query)
     mycursor.execute(query)
 
-    # for (ParkName, Latitude, Longitude, Size, State) in mycursor:
-        # print("{}, {}, {}, {}, {}".format(ParkName, Latitude, Longitude, Size, State))
+    for (ParkName, Latitude, Longitude, Size, State) in mycursor:
+        print("{}, {}, {}, {}, {}".format(ParkName, Latitude, Longitude, Size, State))
 
     df = pandas.read_sql_query(query, mydb)
     print(df)
