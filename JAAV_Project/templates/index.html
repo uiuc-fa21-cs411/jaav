@@ -10,31 +10,45 @@
   </div>
 </div>
 <br/><br/>
+<!--Inputs -->
 <div class="row">
   <div class="form-group col">
-    <label for="sql-text-area">Enter A ParkName you want to learn more about!</label>
+    <label for="sql-text-area">Enter the name of a park you want to learn more about!</label>
     <textarea class="form-control" id="sql-text-area" rows="1">
     </textarea>
-    
-  </div>
-  <div>
-    <input type="hidden" name="query1" value="no">
-    <input type="checkbox" name="query1" id="q1" value="yes"> Run with query 1 filtering?
-    <input type="hidden" name="query2" value="no">
-    <input type="checkbox" name="query2" id="q2" value="yes"> Run with query 2 filtering?
   </div>
 </div>
 <div>
-  <div>
-    <p>Enter your Username and the Name of your Favorite Trail that you visited!</p>
-    <label for="sql-updateFavTrail-username">Username</label>
-    <textarea class="form-control" id="sql-updateFavTrail-username" rows="1">
-    </textarea>
-    <label for="sql-updateFavTrail-trail">TrailName</label>
-    <textarea class="form-control" id="sql-updateFavTrail-trail" rows="1">
-    </textarea>
+    <input type="hidden" name="query1" value="no">
+    <input type="checkbox" name="query1" id="q1" value="yes"> Rank parks by number of native species
+    <br>
+    <input type="hidden" name="query2" value="no">
+    <input type="checkbox" name="query2" id="q2" value="yes"> Rank parks by trail popularity 
+</div>
+<br>
+<div>
+  <p>Enter your Username and the Name of your Favorite Trail that you visited!</p>
+  <label for="sql-updateFavTrail-username">Username</label>
+  <textarea class="form-control" id="sql-updateFavTrail-username" rows="1">
+  </textarea>
+  <label for="sql-updateFavTrail-trail">TrailName</label>
+  <textarea class="form-control" id="sql-updateFavTrail-trail" rows="1">
+  </textarea>
+</div>
+<br>
+<div>
+  <label for="sql-query-input">Execute an SQL Query</label>
+  <textarea class="form-control" id="sql-query-input" rows="1">
+  </textarea>
+</div>
+<br>
+<!--Run Button-->
+<div class="row text-center">
+  <div class="col">
+    <button class="btn btn-primary" id="sendButton">Run</button>
   </div>
 </div>
+<!--Results-->
 <div class="row">
   <div class="result-table col">
     <div id="canvas-result-table" style="height: 500px"></div>
@@ -43,9 +57,5 @@
     <div id="canvas-result-plot" style="height: 500px"></div>
   </div>
 </div>
-<div class="row text-center">
-  <div class="col">
-    <button class="btn btn-primary" id="sendButton">Run</button>
-  </div>
-</div>
+
 {% endblock %}

@@ -9,42 +9,53 @@ def home():
 
 @app.route('/query', methods=['POST'])
 def process_query():
-    user_in = (request.form['query_string'])
-    select_q1 = request.form['select_query_1']
-    select_q2 = (request.form['select_query_2'])
-    print(request.form)
+    user_in = (request.form['query_string']).strip()
+    select_q1 = (request.form['select_query_1']).strip()
+    select_q2 = (request.form['select_query_2']).strip()
+    #print(request.form)
     username_in = (request.form['update_fav_trail_usrnm']).strip()
     trailname_in = (request.form['update_fav_trail_trlnm']).strip()
-
+    custom_query = (request.form['custom_query']).strip()
     # print(type(select_q1))
     # print(select_q2)
-    
+    # print(custom_query)
+
     mydb = mysql.connector.connect(
     host='localhost',
     user='awandke2',
     database='awandke2_database',
-    password='')
+    password='Mayaisveryfluffy1!')
     
     mycursor = mydb.cursor()
 
     query = ''
-    if user_in.strip() != '':
-        query = "select * from Parks where Parks.ParkName like concat('%%', '%s', '%%')"%user_in.strip()
-        if select_q1 == "1":
-            query = "SELECT Parks.ParkName, count(ParkBiodiversity.Biodiversity) AS NativeCount FROM Parks INNER JOIN ParkBiodiversity ON Parks.ParkName = ParkBiodiversity.Park WHERE ParkBiodiversity.Nativeness = 'Native' and Parks.ParkName like concat('%%', '%s', '%%') GROUP BY ParkName ORDER BY NativeCount desc"%user_in.strip()
-        elif select_q2 == "1":
-            query = "SELECT * FROM(SELECT AVG(Trails.Popularity) as longTrailPopularity, Trails.ParkName FROM Trails inner join Parks on Trails.ParkName = Parks.ParkName WHERE Parks.ParkName like concat('%%', '%s', '%%') and Trails.Length >= (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q1 NATURAL JOIN (SELECT AVG(Trails.Popularity) as ShortTrailPopularity, Trails.ParkName FROM Trails WHERE  Trails.Length < (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q2;"%user_in.strip()
+    # this will execute any sql query, useful for debugging
+    if custom_query != '':
+        if ("select" in custom_query.lower()):
+          query = custom_query
+        else:
+          mycursor.execute(custom_query)
+          mydb.commit()
+          query = '' 
+    elif user_in != '':
+        query = "select * from Parks where Parks.ParkName like concat('%%', '%s', '%%')"%user_in
+    elif select_q1 == "1":
+        query = "SELECT Parks.ParkName, count(ParkBiodiversity.Biodiversity) AS NativeCount FROM Parks INNER JOIN ParkBiodiversity ON Parks.ParkName = ParkBiodiversity.Park WHERE ParkBiodiversity.Nativeness = 'Native' and Parks.ParkName like concat('%%', '%s', '%%') GROUP BY ParkName ORDER BY NativeCount desc"%user_in.strip()
+    elif select_q2 == "1":
+        query = "SELECT * FROM(SELECT AVG(Trails.Popularity) as longTrailPopularity, Trails.ParkName FROM Trails inner join Parks on Trails.ParkName = Parks.ParkName WHERE Parks.ParkName like concat('%%', '%s', '%%') and Trails.Length >= (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q1 NATURAL JOIN (SELECT AVG(Trails.Popularity) as ShortTrailPopularity, Trails.ParkName FROM Trails WHERE  Trails.Length < (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q2;"%user_in.strip()
     else:
         # Update FavoriteTrails table's Visited field to 1 instead of 0 to mark as visited for specified user
         update_query = "update FavoriteTrails set Visited = 1 where TrailName = '" + trailname_in + "' and Username = '" + username_in + "'"
+        print (update_query)
         mycursor.execute(update_query)
         mydb.commit()
         # Display Favorite Trails after the update
         query = "select * from FavoriteTrails"
 
     print(query)
-
-    df = pandas.read_sql_query(query, mydb)
+    # only execute an actual query
+    if (query != ''):
+      df = pandas.read_sql_query(query, mydb)
     mycursor.close()
     mydb.close()
 

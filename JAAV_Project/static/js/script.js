@@ -10,6 +10,7 @@ $( document ).ready(function() {
         query_string = $("#sql-text-area").val();
         update_fav_trail_usrnm = document.getElementById('sql-updateFavTrail-username').value;
         update_fav_trail_trlnm = document.getElementById('sql-updateFavTrail-trail').value;
+        custom_query = document.getElementById('sql-query-input').value;
         select_query_1 = 0;
         select_query_2 = 0;
 
@@ -25,7 +26,8 @@ $( document ).ready(function() {
             select_query_1: select_query_1,
             select_query_2: select_query_2,
             update_fav_trail_usrnm: update_fav_trail_usrnm,
-            update_fav_trail_trlnm: update_fav_trail_trlnm
+            update_fav_trail_trlnm: update_fav_trail_trlnm,
+            custom_query: custom_query
         }, function(result, status){
             result_data = result['data']
 
