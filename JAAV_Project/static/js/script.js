@@ -6,8 +6,10 @@ $( document ).ready(function() {
     q1_result = document.getElementById('q1')
     q2_result = document.getElementById('q2')
 
-    getData = function (query_string, select_query_1, select_query_2) {
+    getData = function (query_string, select_query_1, select_query_2, update_fav_trail_usrnm, update_fav_trail_trlnm) {
         query_string = $("#sql-text-area").val();
+        update_fav_trail_usrnm = document.getElementById('sql-updateFavTrail-username').value;
+        update_fav_trail_trlnm = document.getElementById('sql-updateFavTrail-trail').value;
         select_query_1 = 0;
         select_query_2 = 0;
 
@@ -21,7 +23,9 @@ $( document ).ready(function() {
         $.post( "/query", {
             query_string: query_string,
             select_query_1: select_query_1,
-            select_query_2: select_query_2
+            select_query_2: select_query_2,
+            update_fav_trail_usrnm: update_fav_trail_usrnm,
+            update_fav_trail_trlnm: update_fav_trail_trlnm
         }, function(result, status){
             result_data = result['data']
 
@@ -57,6 +61,6 @@ $( document ).ready(function() {
     }
 
     $("#sendButton").click(function() {
-        getData($("#sql-text-area").val(), $("#q1").val(), $("#q2").val())
+        getData($("#sql-text-area").val(), $("#q1").val(), $("#q2").val(), $("#sql-updateFavTrail-username").val(), $("#sql-updateFavTrail-trail").val())
     })
 })
