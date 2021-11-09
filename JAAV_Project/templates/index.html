@@ -13,7 +13,7 @@
 <!--Inputs -->
 <div class="row">
   <div class="form-group col">
-    <label for="sql-text-area">Enter the name of a park you want to learn more about!</label>
+    <label for="sql-text-area">1. Enter the name of a park you want to learn more about!</label>
     <textarea class="form-control" id="sql-text-area" rows="1">
     </textarea>
   </div>
@@ -27,7 +27,29 @@
 </div>
 <br>
 <div>
-  <p>Enter your Username and the Name of your Favorite Trail that you visited!</p>
+  <p>2. Create or delete an account</p>
+  <input type="hidden" name="delete-user" value="no">
+  <input type="checkbox" name="delete-user" id="delete-user" value="yes"> Delete
+  <br>
+  <label for="create-user">Username</label>
+  <textarea class="form-control" id="create-user" rows="1"></textarea>
+  <label for="create-pass">Password</label>
+  <textarea class="form-control" id="create-pass" rows="1"></textarea>
+</div>
+<br>
+<div>
+  <p>3. Add or remove a favorite trail</p>
+  <input type="hidden" name="delete-trail" value="no">
+  <input type="checkbox" name="delete-trail" id="delete-trail" value="yes"> remove
+  <br>
+  <label for="add-trail-user">Username</label>
+  <textarea class="form-control" id="add-trail-user" rows="1"></textarea>
+  <label for="add-trail-pass">Trail Name</label>
+  <textarea class="form-control" id="add-trail-name" rows="1"></textarea>
+</div>
+<br>
+<div>
+  <p>4. Enter your Username and the Name of your Favorite Trail that you visited!</p>
   <label for="sql-updateFavTrail-username">Username</label>
   <textarea class="form-control" id="sql-updateFavTrail-username" rows="1">
   </textarea>
@@ -37,7 +59,7 @@
 </div>
 <br>
 <div>
-  <label for="sql-query-input">Execute an SQL Query</label>
+  <label for="sql-query-input">5. Execute an SQL Query</label>
   <textarea class="form-control" id="sql-query-input" rows="1">
   </textarea>
 </div>
