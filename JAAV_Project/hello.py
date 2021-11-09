@@ -30,7 +30,7 @@ def process_query():
     host='localhost',
     user='awandke2',
     database='awandke2_database',
-    password='Mayaisveryfluffy1!')
+    password='a_funny_password')
     
     mycursor = mydb.cursor()
 
@@ -43,7 +43,6 @@ def process_query():
         elif select_q2 == "1" and select_q1 != "1":
           query = "SELECT * FROM(SELECT AVG(Trails.Popularity) as longTrailPopularity, Trails.ParkName FROM Trails inner join Parks on Trails.ParkName = Parks.ParkName WHERE Parks.ParkName like concat('%%', '%s', '%%') and Trails.Length >= (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q1 NATURAL JOIN (SELECT AVG(Trails.Popularity) as ShortTrailPopularity, Trails.ParkName FROM Trails WHERE  Trails.Length < (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q2 NATURAL JOIN Parks;"%user_in
         elif select_q1 == "1" and select_q2 == "1":
-          print("hello from else statement")
           query = "SELECT * FROM(SELECT AVG(Trails.Popularity) as longTrailPopularity, Trails.ParkName FROM Trails inner join Parks on Trails.ParkName = Parks.ParkName WHERE Parks.ParkName like concat('%%', '%s', '%%') and Trails.Length >= (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q1 NATURAL JOIN (SELECT AVG(Trails.Popularity) as ShortTrailPopularity, Trails.ParkName FROM Trails WHERE  Trails.Length < (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q2 NATURAL JOIN (SELECT Parks.ParkName, count(ParkBiodiversity.Biodiversity) AS NativeCount FROM Parks INNER JOIN ParkBiodiversity ON Parks.ParkName = ParkBiodiversity.Park WHERE ParkBiodiversity.Nativeness = 'Native' GROUP BY ParkName) as q3 NATURAL JOIN Parks;"%user_in
         
     # runs just native count query
@@ -55,10 +54,14 @@ def process_query():
     # Add or delete a user
     elif create_user != '' and create_pass != '':
       if del_user == "1":
-        delete_query = "delete from Users where Username = '%s'"%create_user
-        mycursor.execute(delete_query)
         delete_query = "delete from FavoriteTrails where Username = '%s'"%create_user
+        print(delete_query)
         mycursor.execute(delete_query)
+        mydb.commit()
+        delete_query = "delete from Users where Username = '%s'"%create_user
+        print(delete_query)
+        mycursor.execute(delete_query)
+        mydb.commit()
       else :
         insert_query = "insert into Users values('%s', '%s')"%(create_user, create_pass)
         print(insert_query)
