@@ -37,12 +37,27 @@ def process_query():
           mycursor.execute(custom_query)
           mydb.commit()
           query = '' 
+    # for both output is: ParkName + data, NativeCount, LongTrailPop, ShortTrailPop
+    # output: all park data + native count
+
+    # runs general parks query modified by q1 and/or q2
     elif user_in != '':
         query = "select * from Parks where Parks.ParkName like concat('%%', '%s', '%%')"%user_in
+        if select_q1 == "1" and select_q2 != "1":
+          query = "SELECT Parks.ParkName, Parks.Latitude, Parks.Longitude, Parks.Size, Parks.State, count(ParkBiodiversity.Biodiversity) AS NativeCount FROM Parks INNER JOIN ParkBiodiversity ON Parks.ParkName = ParkBiodiversity.Park WHERE ParkBiodiversity.Nativeness = 'Native' and Parks.ParkName like concat('%%', '%s', '%%') GROUP BY ParkName ORDER BY NativeCount desc"%user_in
+        elif select_q2 == "1" and select_q1 != "1":
+          query = "SELECT * FROM(SELECT AVG(Trails.Popularity) as longTrailPopularity, Trails.ParkName FROM Trails inner join Parks on Trails.ParkName = Parks.ParkName WHERE Parks.ParkName like concat('%%', '%s', '%%') and Trails.Length >= (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q1 NATURAL JOIN (SELECT AVG(Trails.Popularity) as ShortTrailPopularity, Trails.ParkName FROM Trails WHERE  Trails.Length < (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q2 NATURAL JOIN Parks;"%user_in
+        elif select_q1 == "1" and select_q2 == "1":
+          print("hello from else statement")
+          query = "SELECT * FROM(SELECT AVG(Trails.Popularity) as longTrailPopularity, Trails.ParkName FROM Trails inner join Parks on Trails.ParkName = Parks.ParkName WHERE Parks.ParkName like concat('%%', '%s', '%%') and Trails.Length >= (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q1 NATURAL JOIN (SELECT AVG(Trails.Popularity) as ShortTrailPopularity, Trails.ParkName FROM Trails WHERE  Trails.Length < (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q2 NATURAL JOIN (SELECT Parks.ParkName, count(ParkBiodiversity.Biodiversity) AS NativeCount FROM Parks INNER JOIN ParkBiodiversity ON Parks.ParkName = ParkBiodiversity.Park WHERE ParkBiodiversity.Nativeness = 'Native' GROUP BY ParkName) as q3 NATURAL JOIN Parks;"%user_in
+        
+
+    # runs just native count query
     elif select_q1 == "1":
-        query = "SELECT Parks.ParkName, count(ParkBiodiversity.Biodiversity) AS NativeCount FROM Parks INNER JOIN ParkBiodiversity ON Parks.ParkName = ParkBiodiversity.Park WHERE ParkBiodiversity.Nativeness = 'Native' and Parks.ParkName like concat('%%', '%s', '%%') GROUP BY ParkName ORDER BY NativeCount desc"%user_in.strip()
+        query = "SELECT Parks.ParkName, count(ParkBiodiversity.Biodiversity) AS NativeCount FROM Parks INNER JOIN ParkBiodiversity ON Parks.ParkName = ParkBiodiversity.Park WHERE ParkBiodiversity.Nativeness = 'Native' GROUP BY ParkName ORDER BY NativeCount desc;"    
+    # runs just trail popularity query
     elif select_q2 == "1":
-        query = "SELECT * FROM(SELECT AVG(Trails.Popularity) as longTrailPopularity, Trails.ParkName FROM Trails inner join Parks on Trails.ParkName = Parks.ParkName WHERE Parks.ParkName like concat('%%', '%s', '%%') and Trails.Length >= (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q1 NATURAL JOIN (SELECT AVG(Trails.Popularity) as ShortTrailPopularity, Trails.ParkName FROM Trails WHERE  Trails.Length < (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q2;"%user_in.strip()
+        query = "SELECT * FROM(SELECT AVG(Trails.Popularity) as longTrailPopularity, Trails.ParkName FROM Trails WHERE Trails.Length >= (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q1 NATURAL JOIN (SELECT AVG(Trails.Popularity) as ShortTrailPopularity, Trails.ParkName FROM Trails WHERE Trails.Length < (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q2;"
     else:
         # Update FavoriteTrails table's Visited field to 1 instead of 0 to mark as visited for specified user
         update_query = "update FavoriteTrails set Visited = 1 where TrailName = '" + trailname_in + "' and Username = '" + username_in + "'"
@@ -53,9 +68,8 @@ def process_query():
         query = "select * from FavoriteTrails"
 
     print(query)
-    # only execute an actual query
-    if (query != ''):
-      df = pandas.read_sql_query(query, mydb)
+    
+    df = pandas.read_sql_query(query, mydb)
     mycursor.close()
     mydb.close()
 
@@ -84,7 +98,6 @@ def process_query():
 
 
 
-
-
 if __name__ == '__main__':
    app.run()
+
