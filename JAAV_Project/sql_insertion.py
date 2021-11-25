@@ -2,9 +2,9 @@ import mysql.connector
 import csv 
 mydb = mysql.connector.connect(
     host='localhost',
-    user='awandke2',
-    database='awandke2_database',
-    password='this_is_my_password:)'
+    user='jananir2',
+    database='jananir2_database',
+    password='Mseq131640!'
 )
 
 # Numbers to use to get the correct data into the tables

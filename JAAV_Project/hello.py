@@ -4,10 +4,15 @@ app = Flask(__name__)
 import mysql.connector
 
 @app.route('/')
-def home():
-   return render_template('index.html', title = "JAAV Final Project")
+def signin():
+    return render_template('signin.html')
 
-@app.route('/query', methods=['POST'])
+# figure out routing
+@app.route('/info')
+def home():
+   return render_template('home.html', title = "JAAV Final Project")
+
+@app.route('/info/query', methods=['POST'])
 def process_query():
     user_in = (request.form['query_string']).strip()
     select_q1 = (request.form['select_query_1']).strip()
@@ -28,9 +33,9 @@ def process_query():
 
     mydb = mysql.connector.connect(
     host='localhost',
-    user='awandke2',
-    database='awandke2_database',
-    password='a_funny_password')
+    user='jananir2',
+    database='jananir2_database',
+    password='Mseq131640!')
     
     mycursor = mydb.cursor()
 
