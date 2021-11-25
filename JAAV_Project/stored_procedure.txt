@@ -1,0 +1,53 @@
+--notes 
+--run these these commands in order to get this to work on MySql terminal:
+--delimiter //
+--copy and paste everything belong 
+--delimiter ; 
+--finally, use "call find_destination();" to use the advanced query
+
+
+create procedure find_destination(IN user_lat  DECIMAL(15,5), IN user_long  DECIMAL(15,5))
+begin
+    DECLARE finished int default 0;    
+    DECLARE short = 5;
+    DECLARE medium = 10;
+    DECALRE long = 45;
+    DECLARE Distance VARCHAR(6) default "short";
+    DECLARE count_var REAL;
+    DECLARE product VARCHAR(255);
+    DECLARE brand VARCHAR(255);
+    DECLARE cur CURSOR FOR select *  
+        from Parks
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = 1;
+    
+    
+    create table TripPlan (
+        ParkName VARCHAR(255),
+        Distance VARCHAR(6),
+        CampsiteName VARCHAR(255),
+        CampsitePrice DECIMAL(15,5),
+        TrailName VARCHAR(255)
+    );
+    
+    open cur;
+    
+    fetch next from cur into product, brand, count_var;
+    repeat
+          IF count_var <= 5 THEN SET ZStatus = "Red";
+        ELSEIF count_var > 5 AND count_var <= 15 THEN SET ZStatus = "Yellow";
+        ELSEIF count_var > 15 THEN SET ZStatus = "Green";
+        END IF;
+        
+        insert into FinalTable values (product, brand, ZStatus);
+        fetch next from cur into product, brand, count_var;
+    until finished
+    end repeat;
+    
+    close cur;
+    
+    
+    select *
+    from FinalTable
+    order by ProductName;
+
+end;
