@@ -42,7 +42,7 @@ def process_query():
     host='localhost',
     user='awangoo2',
     database='awangoo2_database',
-    password='Abhsav2020!')
+    password='')
     
     mycursor = mydb.cursor()
 
