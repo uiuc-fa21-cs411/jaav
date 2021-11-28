@@ -1,86 +1,91 @@
---notes 
---run these these commands in order to get this to work on MySql terminal:
---delimiter //
---copy and paste everything belong 
---delimiter ; 
---finally, use "call plan_trip();" to use the advanced query
+-- notes 
+-- run these these commands in order to get this to work on MySql terminal:
+-- delimiter //
+-- copy and paste everything belong 
+-- delimiter ; 
+-- finally, use "call plan_trip();" to use the advanced query
 
 
 
 
 
---what this returns a number of different potential trips for a user 
---based on their location and how far they want to travel 
---schema of table that is returned:
---    create table TripPlan (
---        ParkName VARCHAR(255),
---        Distance VARCHAR(6),
---        CampsiteName VARCHAR(255),
---        CampsitePrice DECIMAL(15,5),
---        TrailName VARCHAR(255)
---    );
+-- what this returns a number of different potential trips for a user 
+-- based on their location and how far they want to travel 
+-- schema of table that is returned:
+--     create table TripPlan (
+--         ParkName VARCHAR(255),
+--         Distance VARCHAR(6),
+--         CampsiteName VARCHAR(255),
+--         CampsitePrice DECIMAL(15,5),
+--         TrailName VARCHAR(255)
+--     );
 
 create procedure plan_trip(IN user_lat  DECIMAL(15,5), IN user_long  DECIMAL(15,5), IN request_dist VARCHAR(6))
 begin
-    DECLARE finished int default 0;    
-    DECLARE short = 5;  --measured in degrees
-    DECLARE medium = 10;
-    DECLARE Distance VARCHAR(6) default "short";
+    DECLARE finished int DEFAULT 0;    
+    DECLARE short int DEFAULT 5;  -- measured in degrees
+    DECLARE medium int DEFAULT 10;
+    DECLARE Distance VARCHAR(6) DEFAULT "short";
     DECLARE park_name VARCHAR(255);
     DECLARE lat DECIMAL(15,5);
-    DECLARE long DECIMAL(15,5);
+    DECLARE longitude DECIMAL(15,5);
     DECLARE trail_name VARCHAR(255);
     DECLARE site_name VARCHAR(255);
     DECLARE price DECIMAL(15,5);
 
     DECLARE park_cur CURSOR FOR select Parks.ParkName, Parks.Latitude, Parks.Longitude
-        from Parks
+        from Parks;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = 1;
     
-    --create distance table
+    -- create distance table
     create table park_distance(
       ParkName VARCHAR(255),
-      Relative_distance VARCHAR(6)
-    )
+      Distance VARCHAR(6)
+    );
     
-    --use cursor to fill distance table
+    -- use cursor to fill distance table
     open park_cur;
     
-    fetch next from park_cur into park_name, lat, long;
+    fetch next from park_cur into park_name, lat, longitude;
     repeat
-          IF (user_lat - lat <= short AND user_long - long <= short) THEN SET Distance = "Short";
-        ELSEIF (user_lat - lat <= medium AND user_long - long <= medium) THEN SET Distance = "Medium";
-        ELSEIF (user_lat - lat > medium AND user_long - long > medium) THEN SET Distance = "Long";
+          IF (user_lat - lat <= short AND user_long - longitude <= short) THEN SET Distance = "Short";
+        ELSEIF (user_lat - lat <= medium AND user_long - longitude <= medium) THEN SET Distance = "Medium";
+        ELSEIF (user_lat - lat > medium AND user_long - longitude > medium) THEN SET Distance = "Long";
         END IF;
 
 
         insert into park_distance values (park_name, Distance);
-        fetch next from park_cur into park_name, lat, long;
+        fetch next from park_cur into park_name, lat, longitude;
     until finished
     end repeat;
     
     close park_cur;
 
---find most popular trail for each park, adv. query 1
+-- find most popular trail for each park, adv. query 1
 CREATE VIEW popular_trails AS
-  select ParkName, TrailName, max(Popularity) 
+  select Parks.ParkName, Trails.TrailName, max(Trails.Popularity) as max_pop
     from Trails natural join Parks
     group by Trails.ParkName;
 
---find cheapest site for each park, adv. query 2
+-- find cheapest site for each park, adv. query 2
 CREATE VIEW cheap_sites AS
-  select ParkName, CampsiteName, min(Price)
+  select Parks.ParkName, Campsites.CampsiteName, min(Campsites.Price) as min_price
     from Parks natural join Campsites
     group by Campsites.ParkName;
 
---return a table TODO: do we need to create a table to store results? 
-  select park_distance.ParkName, park_distance.Distance, Campsites.CampsiteName, Campsites.Price, Trails.TrailName
+-- return a table TODO: do we need to create a table to store results? 
+  select park_distance.ParkName, park_distance.Distance, cheap_sites.CampsiteName, cheap_sites.min_price, popular_trails.TrailName
     from popular_trails inner join cheap_sites on popular_trails.ParkName = cheap_sites.ParkName
       inner join park_distance on park_distance.ParkName = cheap_sites.ParkName
-    where TripPlan.Distance = request_dist
+    where park_distance.Distance = request_dist
     order by park_distance.ParkName;
 
-end;
+  drop table park_distance;
+  drop view popular_trails;
+  drop view cheap_sites;
+
+
+end;//
 
 
 
