@@ -7,10 +7,17 @@ import mysql.connector
 def signin():
     return render_template('signin.html')
 
-# figure out routing
+@app.route('/def')
+def signin1():
+    return render_template('signin.html')
+
 @app.route('/info')
 def home():
    return render_template('home.html', title = "JAAV Final Project")
+
+@app.route('/ftrails')
+def favtr():
+    return render_template('favtrails.html', title = "Favorite Trails")
 
 @app.route('/info/query', methods=['POST'])
 def process_query():
@@ -33,9 +40,9 @@ def process_query():
 
     mydb = mysql.connector.connect(
     host='localhost',
-    user='jananir2',
-    database='jananir2_database',
-    password='Mseq131640!')
+    user='awangoo2',
+    database='awangoo2_database',
+    password='')
     
     mycursor = mydb.cursor()
 
