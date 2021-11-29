@@ -7,23 +7,18 @@
 
 
 
--- for debugging 
-drop view cheap_sites;
-drop view popular_trails;
-drop table park_distance;
-drop procedure plan_trip;
-
-
-
 -- what this returns a number of different potential trips for a user 
 -- based on their location and how far they want to travel 
 -- schema of table that is returned:
 --     create table TripPlan (
---         ParkName VARCHAR(255),
---         Distance VARCHAR(6),
---         CampsiteName VARCHAR(255),
---         CampsitePrice DECIMAL(15,5),
---         TrailName VARCHAR(255)
+--         ParkName VARCHAR(255), -- name of a park to goto
+--         Distance VARCHAR(6),  -- relative distance away from the user's location
+--         CampsiteName VARCHAR(255), -- name of an inexpensive campsite to stay at
+--         CampsitePrice DECIMAL(15,5), -- price per night of campsite
+--         TrailName VARCHAR(255), -- name of a trail to try
+--         ShortPopularity VARCHAR(6), -- popularity rating of short trails
+--         LongPopularity VARCHAR(6), -- popularity rating of long trails
+--         NativeDiveristy VARCHAR(6) -- divserity rating for native species at this park
 --     );
 
 create procedure plan_trip(IN user_lat  DECIMAL(15,5), IN user_long  DECIMAL(15,5), IN request_dist VARCHAR(6))
@@ -31,6 +26,10 @@ begin
     DECLARE finished int DEFAULT 0;    
     DECLARE short int DEFAULT 5;  -- measured in degrees
     DECLARE medium int DEFAULT 10;
+    DECLARE low_native int DEFAULT 1500; -- measure in number of species
+    DECLARE med_native int DEFAULT 2000;
+    DECLARE low_pop_cutoff DECIMAL(15,5) DEFAULT 8;
+    DECLARE med_pop_cutoff DECIMAL (15,5) DEFAULT 14;
     DECLARE Distance VARCHAR(6) DEFAULT "short";
     DECLARE park_name VARCHAR(255);
     DECLARE lat DECIMAL(15,5);
@@ -38,15 +37,46 @@ begin
     DECLARE trail_name VARCHAR(255);
     DECLARE site_name VARCHAR(255);
     DECLARE price DECIMAL(15,5);
+    DECLARE native_count INT DEFAULT 0;
+    DECLARE native_cat VARCHAR(6);
+    DECLARE long_pop DECIMAL(15,5);
+    DECLARE short_pop DECIMAL(15,5);
+    DECLARE long_pop_rating VARCHAR(6) DEFAULT "N/A";
+    DECLARE short_pop_rating VARCHAR(6) DEFAULT "N/A";
 
+    -- cursor for native count
+    DECLARE native_cur CURSOR FOR 
+      (SELECT Parks.ParkName, count(ParkBiodiversity.Biodiversity) AS NativeCount 
+      FROM Parks INNER JOIN ParkBiodiversity ON Parks.ParkName = ParkBiodiversity.Park 
+      WHERE ParkBiodiversity.Nativeness = 'Native' 
+      GROUP BY ParkName 
+      ORDER BY NativeCount desc);
+
+    -- cursor for trail popularity
+    DECLARE trail_cur CURSOR FOR
+      (SELECT * 
+      FROM(SELECT Trails.ParkName, AVG(Trails.Popularity) as longTrailPopularity  
+      FROM Trails 
+      WHERE Trails.Length >= (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q1 
+      NATURAL JOIN 
+      (SELECT AVG(Trails.Popularity) as ShortTrailPopularity, Trails.ParkName 
+      FROM Trails 
+      WHERE Trails.Length < (select avg(Trails.Length) as avgLength from Trails) group by Trails.ParkName) as q2);
+
+    -- cursor for parks
     DECLARE park_cur CURSOR FOR select Parks.ParkName, Parks.Latitude, Parks.Longitude
         from Parks;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = 1;
-    
+   
+
     -- create distance table
-    create table park_distance(
+    drop table if exists `park_data`;
+    create table park_data(
       ParkName VARCHAR(255),
-      Distance VARCHAR(6)
+      Distance VARCHAR(6),
+      LongPopularity VARCHAR(6),
+      ShortPopularity VARCHAR(6),
+      NativeDiveristy VARCHAR(6)
     );
     
     -- use cursor to fill distance table
@@ -54,48 +84,87 @@ begin
     
     fetch next from park_cur into park_name, lat, longitude;
     repeat
-          IF (user_lat - lat <= short AND user_long - longitude <= short) THEN SET Distance = "Short";
-        ELSEIF (user_lat - lat <= medium AND user_long - longitude <= medium) THEN SET Distance = "Medium";
-        ELSEIF (user_lat - lat > medium AND user_long - longitude > medium) THEN SET Distance = "Long";
+          IF (ABS(user_lat - lat) <= short AND ABS(user_long - longitude) <= short) THEN SET Distance = "Short";
+        ELSEIF (ABS(user_lat - lat) <= medium AND ABS(user_long - longitude) <= medium) THEN SET Distance = "Medium";
+        ELSEIF (ABS(user_lat - lat) > medium AND ABS(user_long - longitude) > medium) THEN SET Distance = "Long";
         END IF;
 
 
-        insert into park_distance values (park_name, Distance);
+        insert into park_data values (park_name, Distance, short_pop_rating, long_pop_rating, native_count);
         fetch next from park_cur into park_name, lat, longitude;
     until finished
     end repeat;
     
     close park_cur;
+    set finished = 0;
+    open native_cur;
+    
+    fetch next from native_cur into park_name, native_count;
+    repeat
+          IF (native_count <= low_native) THEN SET native_cat = "Low";
+        ELSEIF (native_count <= med_native) THEN SET native_cat = "Medium";
+        ELSEIF (native_count > med_native) THEN SET native_cat = "High";
+        END IF;
 
--- find most popular trail for each park
-CREATE VIEW popular_trails AS
-  select Trails.ParkName, max(Trails.Popularity) as max_pop
-    from Trails
-    group by Trails.ParkName;
+        update park_data 
+        set park_data.NativeDiveristy = native_cat
+        where park_data.ParkName = park_name;
 
--- find cheapest site for each park
-CREATE VIEW cheap_sites AS
-  select Campsites.ParkName, min(Campsites.Price) as min_price
-  from Campsites
-  group by Campsites.ParkName;
+        fetch next from native_cur into park_name, native_count;
+    until finished
+    end repeat;
+    
+    close native_cur;
+    set finished = 0;
+    open trail_cur;
 
--- return a table TODO: do we need to create a table to store results? 
-  select park_distance.ParkName, park_distance.Distance, Campsites.CampsiteName, cheap_sites.min_price, Trails.TrailName
-    from popular_trails 
-      inner join cheap_sites on popular_trails.ParkName = cheap_sites.ParkName
-      inner join park_distance on park_distance.ParkName = cheap_sites.ParkName
-      inner join Campsites on Campsites.ParkName = cheap_sites.ParkName
-      inner join Trails on Trails.ParkName = popular_trails.ParkName 
-    where park_distance.Distance = request_dist
-    order by park_distance.ParkName
+    fetch next from trail_cur into park_name, long_pop, short_pop;
+    repeat
+          IF (short_pop <= low_pop_cutoff) THEN SET short_pop_rating = "Low";
+        ELSEIF (short_pop <= med_pop_cutoff) THEN SET short_pop_rating = "Medium";
+        ELSEIF (short_pop > med_pop_cutoff) THEN SET short_pop_rating = "High";
+        END IF;
+
+         IF (long_pop <= low_pop_cutoff) THEN SET long_pop_rating = "Low";
+        ELSEIF (long_pop <= med_pop_cutoff) THEN SET long_pop_rating = "Medium";
+        ELSEIF (long_pop > med_pop_cutoff) THEN SET long_pop_rating = "High";
+        END IF;
+
+        update park_data 
+        set park_data.ShortPopularity = short_pop_rating, park_data.LongPopularity = long_pop_rating
+        where park_data.ParkName = park_name;
+
+        fetch next from trail_cur into park_name, long_pop, short_pop;
+    until finished
+    end repeat;
+
+    close trail_cur;
+
+
+-- find most popular trail and cheapest site for each park
+CREATE VIEW features AS
+  select Trails.ParkName, max(Trails.Popularity) as max_pop, min(Campsites.price) as min_price
+    from Trails natural join Campsites
+    group by ParkName;
+
+
+-- return something
+  select park_data.ParkName, park_data.Distance, Campsites.CampsiteName, features.min_price, Trails.TrailName, park_data.ShortPopularity, 
+  park_data.LongPopularity, park_data.NativeDiveristy
+    from features
+      natural join park_data
+      natural join Campsites
+      natural join Trails
+    where park_data.Distance = request_dist and Trails.Popularity = features.max_pop and Campsites.Price = features.min_price
+    order by park_data.ParkName
     limit 100;
 
-  drop table park_distance;
-  drop view popular_trails;
-  drop view cheap_sites;
+  -- drop table park_data;
+  drop view features;
 
 
 end;//
+
 
 
 
