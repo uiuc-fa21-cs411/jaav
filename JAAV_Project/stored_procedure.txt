@@ -7,6 +7,12 @@
 
 
 
+-- for debugging 
+drop view cheap_sites;
+drop view popular_trails;
+drop table park_distance;
+drop procedure plan_trip;
+
 
 
 -- what this returns a number of different potential trips for a user 
@@ -61,24 +67,28 @@ begin
     
     close park_cur;
 
--- find most popular trail for each park, adv. query 1
+-- find most popular trail for each park
 CREATE VIEW popular_trails AS
-  select Parks.ParkName, Trails.TrailName, max(Trails.Popularity) as max_pop
-    from Trails natural join Parks
+  select Trails.ParkName, max(Trails.Popularity) as max_pop
+    from Trails
     group by Trails.ParkName;
 
--- find cheapest site for each park, adv. query 2
+-- find cheapest site for each park
 CREATE VIEW cheap_sites AS
-  select Parks.ParkName, Campsites.CampsiteName, min(Campsites.Price) as min_price
-    from Parks natural join Campsites
-    group by Campsites.ParkName;
+  select Campsites.ParkName, min(Campsites.Price) as min_price
+  from Campsites
+  group by Campsites.ParkName;
 
 -- return a table TODO: do we need to create a table to store results? 
-  select park_distance.ParkName, park_distance.Distance, cheap_sites.CampsiteName, cheap_sites.min_price, popular_trails.TrailName
-    from popular_trails inner join cheap_sites on popular_trails.ParkName = cheap_sites.ParkName
+  select park_distance.ParkName, park_distance.Distance, Campsites.CampsiteName, cheap_sites.min_price, Trails.TrailName
+    from popular_trails 
+      inner join cheap_sites on popular_trails.ParkName = cheap_sites.ParkName
       inner join park_distance on park_distance.ParkName = cheap_sites.ParkName
+      inner join Campsites on Campsites.ParkName = cheap_sites.ParkName
+      inner join Trails on Trails.ParkName = popular_trails.ParkName 
     where park_distance.Distance = request_dist
-    order by park_distance.ParkName;
+    order by park_distance.ParkName
+    limit 100;
 
   drop table park_distance;
   drop view popular_trails;
