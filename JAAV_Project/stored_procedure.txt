@@ -4,6 +4,9 @@
 -- copy and paste everything belong 
 -- delimiter ; 
 -- finally, use "call plan_trip();" to use the advanced query
+-- two sample queries: 
+-- "call plan_trip(34,-118,'Short');" -- 1. Select some parks in California/Southwest
+-- "call plan_trip(40, -88, 'Long');" -- 2. select parks far away from Champaign/Urbana
 
 
 
