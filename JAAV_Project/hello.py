@@ -3,12 +3,19 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 import mysql.connector
 
+
 @app.route('/')
 def signin():
+    username = request.args.get('username')
+    password = request.args.get('password')
+
+
     return render_template('signin.html')
 
 @app.route('/def')
 def signin1():
+    username = request.args.get('username')
+    password = request.args.get('password')
     return render_template('signin.html')
 
 @app.route('/info')
@@ -34,6 +41,10 @@ def process_query():
     create_pass = request.form["create_pass"].strip()
     add_trail_user = request.form["add_trail_user"].strip()
     add_trail_name = request.form["add_trail_name"].strip()
+    Latitude = (request.form["latitude"]).strip()
+    Longitude = (request.form["longitude"]).strip()
+    distance = (request.form["distance"]).strip()
+
     # print(type(select_q1))
     # print(select_q2)
   
@@ -99,6 +110,19 @@ def process_query():
           mydb.commit()
           query = ''    
     # Update FavoriteTrails table's Visited field to 1 instead of 0 to mark as visited for specified user
+    elif Latitude != '' and Longitude != '':
+      print(Latitude)
+      print(Longitude)
+      dist = ''
+      if distance == 's':
+        dist = 'Short'
+      elif distance == 'm':
+        dist = 'Medium'
+      elif distance == 'l':
+        dist = 'Long'
+      
+      query = "call plan_trip(%s, %s, '%s');"%(Latitude, Longitude, dist)
+
     else:
         update_query = "update FavoriteTrails set Visited = 1 where TrailName = '" + trailname_in + "' and Username = '" + username_in + "'"
         print (update_query)

@@ -19,6 +19,9 @@ $( document ).ready(function() {
         select_query_2 = 0;
         del_user = 0;
         del_trail = 0;
+        latitude = document.getElementById("sql-procedure-latitude").value;
+        longitude = document.getElementById("sql-procedure-longitude").value;
+        distance = document.getElementById("sql-procedure-size").value;
         
         if (document.getElementById("delete-user").checked) {
           del_user = 1;
@@ -33,7 +36,7 @@ $( document ).ready(function() {
             select_query_2 = 1;
         }
 
-        $.post( "/query", {
+        $.post( "info/query", {
             query_string: query_string,
             select_query_1: select_query_1,
             select_query_2: select_query_2,
@@ -45,7 +48,10 @@ $( document ).ready(function() {
             create_user: create_user,
             create_pass: create_pass,
             add_trail_user: add_trail_user,
-            add_trail_name: add_trail_name
+            add_trail_name: add_trail_name,
+            longitude : longitude,
+            latitude : latitude,
+            distance : distance
         }, function(result, status){
             result_data = result['data']
 
