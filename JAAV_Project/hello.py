@@ -19,8 +19,78 @@ def home():
 def favtr():
     return render_template('favtrails.html', title = "Favorite Trails")
 
+@app.route('/ftrails/query', methods=['POST'])
+def process():
+    print('Enters process')
+    # print(request.form)
+    username_in = (request.form['update_fav_trail_usrnm']).strip()
+    trailname_in = (request.form['update_fav_trail_trlnm']).strip()
+    add_trail_user = request.form["add_trail_user"].strip()
+    add_trail_name = request.form["add_trail_name"].strip()
+    del_trail = (request.form["del_trail"]).strip()
+    print(add_trail_user, add_trail_name)
+
+    print('hello')
+
+    mydb = mysql.connector.connect(
+    host='localhost',
+    user='jananir2',
+    database='jananir2_database',
+    password='Mseq131640!')
+    
+    mycursor = mydb.cursor()
+    query = ''
+
+    if add_trail_user != '' and add_trail_name != '':
+      if del_trail == "1":
+        delete_query = "delete from FavoriteTrails where Username = '%s' and TrailName = '%s'"%(add_trail_user, add_trail_name)
+        mycursor.execute(delete_query)
+      else :
+        insert_query = "insert into FavoriteTrails values('%s', '%s', 0)"%(add_trail_user, add_trail_name)
+        mycursor.execute(insert_query)
+        print(insert_query)
+      mydb.commit()  
+      query = "select * from FavoriteTrails where Username like concat('%%', '%s', '%%')"%add_trail_user
+    # this will execute any sql query, useful for debugging
+    
+    else:
+        update_query = "update FavoriteTrails set Visited = 1 where TrailName = '" + trailname_in + "' and Username = '" + username_in + "'"
+        print (update_query)
+        mycursor.execute(update_query)
+        mydb.commit()
+        # Display Favorite Trails after the update
+        query = "select * from FavoriteTrails"
+    print(query)
+    df = pandas.read_sql_query(query, mydb)
+    mycursor.close()
+    mydb.close()
+
+    def make_valid(v):
+        if v != v:
+            return None
+        else:
+            return v
+
+    column_labels = [col for col in df.columns]
+    per_col_values = [
+        [make_valid(value) for value in df[col]]
+        for col in df.columns
+    ]
+
+    response = {
+        "query_string": query,
+        "data": {
+            "labels": [[col] for col in column_labels],
+            "values": per_col_values
+        }
+    }
+
+    # print(response)
+    return response
+
 @app.route('/info/query', methods=['POST'])
 def process_query():
+    print('Enters process query')
     user_in = (request.form['query_string']).strip()
     select_q1 = (request.form['select_query_1']).strip()
     select_q2 = (request.form['select_query_2']).strip()
@@ -40,9 +110,9 @@ def process_query():
 
     mydb = mysql.connector.connect(
     host='localhost',
-    user='awangoo2',
-    database='awangoo2_database',
-    password='')
+    user='jananir2',
+    database='jananir2_database',
+    password='Mseq131640!')
     
     mycursor = mydb.cursor()
 
@@ -106,8 +176,6 @@ def process_query():
         mydb.commit()
         # Display Favorite Trails after the update
         query = "select * from FavoriteTrails"
-
-    print(query)
     
     df = pandas.read_sql_query(query, mydb)
     mycursor.close()
