@@ -4,15 +4,38 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
+
+<!DOCTYPE html>   
+<html>   
+<head>
+<style> 
+#home_link {
+    background-color:  lightblue;
+    padding: 15px;
+}  
+Body {  
+  font-family: Calibri, Helvetica, sans-serif;  
+  background-color: pink;  
+}   
+        
+     
+ .container {   
+        padding: 25px;   
+        background-color: #4CAF50;  
+    }   
+</style>   
+</head>    
+<body> 
 <div class="row text-center">
   <div class="col">
     <h1>{{ title}}</h1>
   </div>
 </div>
 <br/><br/>
-<div>
+<div id="home_link">
   <!-- <button id="signout">Sign out</button> -->
   <link><a href="def">Sign out</a></link>
+  <br>
   <link><a href="ftrails">Favorite Trails</a></link>
   <!-- <button id="favtrails">Favorite Trails</button> -->
 </div>
@@ -78,5 +101,6 @@
     <div id="canvas-result-plot" style="height: 500px"></div>
   </div>
 </div>
-
+</body>
+</html>
 {% endblock %}

@@ -10,7 +10,6 @@ $( document ).ready(function() {
     getData = function (query_string, select_query_1, select_query_2, update_fav_trail_usrnm, update_fav_trail_trlnm) {
         console.log("call getData")
         query_string = $("#sql-text-area").val();
-        custom_query = document.getElementById('sql-query-input').value;
         create_user = document.getElementById("create-user").value;
         create_pass = document.getElementById("create-pass").value;
         select_query_1 = 0;
@@ -34,8 +33,7 @@ $( document ).ready(function() {
             query_string: query_string,
             select_query_1: select_query_1,
             select_query_2: select_query_2,
-            custom_query: custom_query,
-            del_trail: del_trail,
+            del_user: del_user,
             create_user: create_user,
             create_pass: create_pass,
             longitude : longitude,
@@ -92,6 +90,7 @@ $( document ).ready(function() {
           del_trail: del_trail
       }, function(result, status){
           result_data = result['data']
+          console.log(result_data)
           var data = [{
               type: 'table',
               header: {

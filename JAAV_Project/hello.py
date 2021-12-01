@@ -20,7 +20,7 @@ def signin1():
 
 @app.route('/info')
 def home():
-   return render_template('home.html', title = "JAAV Final Project")
+   return render_template('home.html', title = "Trip Planner and Explorer")
 
 @app.route('/ftrails')
 def favtr():
@@ -102,7 +102,6 @@ def process_query():
     select_q1 = (request.form['select_query_1']).strip()
     select_q2 = (request.form['select_query_2']).strip()
     #print(request.form)
-    custom_query = (request.form['custom_query']).strip()
     del_user = (request.form["del_user"]).strip()
     create_user = request.form["create_user"].strip()
     create_pass = request.form["create_pass"].strip()
@@ -169,6 +168,9 @@ def process_query():
       
       query = "call plan_trip(%s, %s, '%s');"%(Latitude, Longitude, dist)
     
+    print('ehlp1')
+    print(query)
+    print('help2')
     df = pandas.read_sql_query(query, mydb)
     mycursor.close()
     mydb.close()
