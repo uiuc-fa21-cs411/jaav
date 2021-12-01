@@ -66,7 +66,7 @@ def process():
         mycursor.execute(update_query)
         mydb.commit()
         # Display Favorite Trails after the update
-        query = "select * from FavoriteTrails"
+        query = "select * from FavoriteTrails where Username = '" + username_in + "'"
     print(query)
     df = pandas.read_sql_query(query, mydb)
     mycursor.close()
@@ -102,15 +102,10 @@ def process_query():
     select_q1 = (request.form['select_query_1']).strip()
     select_q2 = (request.form['select_query_2']).strip()
     #print(request.form)
-    username_in = (request.form['update_fav_trail_usrnm']).strip()
-    trailname_in = (request.form['update_fav_trail_trlnm']).strip()
     custom_query = (request.form['custom_query']).strip()
     del_user = (request.form["del_user"]).strip()
-    del_trail = (request.form["del_trail"]).strip()
     create_user = request.form["create_user"].strip()
     create_pass = request.form["create_pass"].strip()
-    add_trail_user = request.form["add_trail_user"].strip()
-    add_trail_name = request.form["add_trail_name"].strip()
     Latitude = (request.form["latitude"]).strip()
     Longitude = (request.form["longitude"]).strip()
     distance = (request.form["distance"]).strip()
@@ -160,26 +155,7 @@ def process_query():
         print(insert_query)
         mycursor.execute(insert_query)
       mydb.commit()
-      query =  "select * from Users"
-    # Add or delete a favorite trail
-    elif add_trail_user != '' and add_trail_name != '':
-      if del_trail == "1":
-        delete_query = "delete from FavoriteTrails where Username = '%s' and TrailName = '%s'"%(add_trail_user, add_trail_name)
-        mycursor.execute(delete_query)
-      else :
-        insert_query = "insert into FavoriteTrails values('%s', '%s', 0)"%(add_trail_user, add_trail_name)
-        mycursor.execute(insert_query)
-      mydb.commit()  
-      query = "select * from FavoriteTrails where Username like concat('%%', '%s', '%%')"%add_trail_user
-    # this will execute any sql query, useful for debugging
-    elif custom_query != '':
-        if ("select" in custom_query.lower()):
-          query = custom_query
-        else:
-          mycursor.execute(custom_query)
-          mydb.commit()
-          query = ''    
-    # Update FavoriteTrails table's Visited field to 1 instead of 0 to mark as visited for specified user
+      query =  "select * from Users"  
     elif Latitude != '' and Longitude != '':
       print(Latitude)
       print(Longitude)
@@ -192,14 +168,6 @@ def process_query():
         dist = 'Long'
       
       query = "call plan_trip(%s, %s, '%s');"%(Latitude, Longitude, dist)
-
-    else:
-        update_query = "update FavoriteTrails set Visited = 1 where TrailName = '" + trailname_in + "' and Username = '" + username_in + "'"
-        print (update_query)
-        mycursor.execute(update_query)
-        mydb.commit()
-        # Display Favorite Trails after the update
-        query = "select * from FavoriteTrails"
     
     df = pandas.read_sql_query(query, mydb)
     mycursor.close()
