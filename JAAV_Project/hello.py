@@ -3,19 +3,44 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 import mysql.connector
 
+CUR_USER = ''
 
 @app.route('/')
 def signin():
     username = request.args.get('username')
     password = request.args.get('password')
-
-
+    CUR_USER = username
+    
+    mydb = mysql.connector.connect(
+    host='localhost',
+    user='jananir2',
+    database='jananir2_database',
+    password='Mseq131640!')
+    
+    mycursor = mydb.cursor()
+    insert_query = "insert ignore into Users values('%s', '%s')"%(username, password)
+    print(insert_query)
+    mycursor.execute(insert_query)
+    mydb.commit()  
     return render_template('signin.html')
 
 @app.route('/def')
 def signin1():
     username = request.args.get('username')
     password = request.args.get('password')
+    CUR_USER = username
+
+    mydb = mysql.connector.connect(
+    host='localhost',
+    user='jananir2',
+    database='jananir2_database',
+    password='Mseq131640!')
+    
+    mycursor = mydb.cursor()
+    insert_query = "insert ignore into Users values('%s', '%s')"%(username, password)
+    print(insert_query)
+    mycursor.execute(insert_query)
+    mydb.commit()  
     return render_template('signin.html')
 
 @app.route('/info')

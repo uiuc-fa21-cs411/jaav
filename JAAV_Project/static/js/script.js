@@ -48,12 +48,16 @@ $( document ).ready(function() {
                   values: result_data['labels'],
                   align: "center",
                   line: {width: 1, color: 'black'},
+                  autosize : true,
+                  width : 1000,
                   fill: {color: "grey"},
-                  font: {family: "Arial", size: 12, color: "white"}
+                  font: {family: "Arial", size: 10, color: "white"}
                 },
                 cells: {
                   values: result_data['values'],
                   align: "center",
+                  autosize : true,
+                  width : 1000,
                   line: {color: "black", width: 1},
                   font: {family: "Arial", size: 11, color: ["black"]}
                 }

@@ -47,7 +47,7 @@ begin
     DECLARE long_pop_rating VARCHAR(6) DEFAULT "N/A";
     DECLARE short_pop_rating VARCHAR(6) DEFAULT "N/A";
 
-    -- cursor for native count
+    -- cursor for native count, this is advnaced query 1
     DECLARE native_cur CURSOR FOR 
       (SELECT Parks.ParkName, count(ParkBiodiversity.Biodiversity) AS NativeCount 
       FROM Parks INNER JOIN ParkBiodiversity ON Parks.ParkName = ParkBiodiversity.Park 
@@ -55,7 +55,7 @@ begin
       GROUP BY ParkName 
       ORDER BY NativeCount desc);
 
-    -- cursor for trail popularity
+    -- cursor for trail popularity, this is advanced query 2
     DECLARE trail_cur CURSOR FOR
       (SELECT * 
       FROM(SELECT Trails.ParkName, AVG(Trails.Popularity) as longTrailPopularity  
@@ -144,7 +144,7 @@ begin
     close trail_cur;
 
 
--- find most popular trail and cheapest site for each park
+-- find most popular trail and cheapest site for each park, this is advanced query 3
 CREATE VIEW features AS
   select Trails.ParkName, max(Trails.Popularity) as max_pop, min(Campsites.price) as min_price
     from Trails natural join Campsites
